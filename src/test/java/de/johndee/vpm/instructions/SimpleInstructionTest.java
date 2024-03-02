@@ -10,8 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class SimpleInstructionTest {
 
@@ -34,8 +33,37 @@ public class SimpleInstructionTest {
 
         assertNotEquals(
                 (long) baseInstruction.getBinaryFormat(),
-                0b0000001000000001000000000000000000000011000000000000000000100001L
+                0b0000001000000001000000000000000000000101000000000000000000100001L
         );
+    }
+
+
+    @Test
+    public void testBaseDecode() {
+        long rawInstruction = 0b0000001000000001000000000000000000000101000000000000000000100000L; // ADDI r1, r2, #16
+        var instruction = VPM64InstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
+
+        assertTrue(instruction instanceof ArithmeticIntegerInstruction);
+        assertEquals((long) instruction.getOPCode(), 0b00000010L);
+
+        var ari = (ArithmeticIntegerInstruction<Long>) instruction;
+        assertEquals((long) ari.getDestinationRegister(), 0b0001L);
+        assertEquals((long) ari.getOption(), 0b0000L);
+        assertEquals((long) ari.getFirstArgument(), 0b101);
+        assertEquals((long) ari.getSecondArgument(), 0b100000L);
+    }
+
+    @Test
+    public void testMoveDecode() {
+        long rawInstruction = 0b0000000000010000000000000000000000000000000000000000000100000000L; // MOV r2, #128
+        var instruction = VPM64InstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
+
+        assertTrue(instruction instanceof MoveInstruction);
+        var move = (MoveInstruction<Long>) instruction;
+        assertEquals((long) instruction.getOPCode(), 0L);
+        assertEquals((long) move.getDestinationRegister(), 0b0010L);
+        assertEquals((long) move.getOptions(), 0b0L);
+        assertEquals((long) move.getArgument(), 128L << 1);
     }
 
     @Test
