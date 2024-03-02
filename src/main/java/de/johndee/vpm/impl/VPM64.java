@@ -2,7 +2,10 @@ package de.johndee.vpm.impl;
 
 import de.johndee.vpm.core.IODevice;
 import de.johndee.vpm.core.MemoryDevice;
+import de.johndee.vpm.core.MemoryRegion;
 import de.johndee.vpm.core.Processor;
+import de.johndee.vpm.exceptions.IllegalMemoryAccessException;
+import de.johndee.vpm.instructions.VPM64InstructionParser;
 import de.johndee.vpm.utils.ArithmeticWrapper;
 
 import java.util.ArrayList;
@@ -22,12 +25,16 @@ public class VPM64 implements Processor<Long> {
     public final static int REGISTER_HR0 = 0b1110;
     public final static int REGISTER_HR1 = 0b1111;
 
-    private Long[] registers;
-    private List<IODevice<Long>> ioDevices;
+    private final Long[] registers;
+    private final List<IODevice<Long>> ioDevices;
+    private final MemoryDevice<Long> memory;
 
     public VPM64() {
         registers = new Long[16]; // 16 registers
         ioDevices = new ArrayList<>(2);
+
+        memory = new Memory64(5000, true, true, MemoryRegion.of(4500L, 5000L));
+        setStackPointer(5000L);
     }
 
     @Override
@@ -98,7 +105,20 @@ public class VPM64 implements Processor<Long> {
 
     @Override
     public Long step() {
-        return null;
+        try {
+            var pc = getProgramCounter();
+            var raw = memory.read(pc, -1L);
+            var instruction = VPM64InstructionParser.fromBinaryFormat(this, raw, pc);
+            instruction.execute();
+
+            setProgramCounter(pc + 1);
+
+        } catch (IllegalMemoryAccessException e) {
+            System.err.println("Illegal memory access at " + getProgramCounter());
+            e.printStackTrace();
+        }
+
+        return getProgramCounter();
     }
 
     @Override
@@ -108,62 +128,68 @@ public class VPM64 implements Processor<Long> {
 
     @Override
     public Long getRegisterValue(int registerID) {
-        return null;
+        return registers[registerID];
     }
 
     @Override
     public Long getProgramCounter() {
-        return null;
+        return registers[REGISTER_PC];
     }
 
     @Override
     public Long getStackPointer() {
-        return null;
+        return registers[REGISTER_SP];
     }
 
     @Override
     public Long getDynamicLink() {
-        return null;
+        return registers[REGISTER_DL];
     }
 
     @Override
     public Long getCompareResultRegister() {
-        return null;
+        return registers[REGISTER_CR];
     }
 
     @Override
     public Long getFramePointer() {
-        return null;
+        return registers[REGISTER_FP];
     }
 
     @Override
     public Long getProgramStart() {
-        return null;
+        return registers[REGISTER_PS];
     }
 
     @Override
     public Long getProgramLength() {
-        return null;
+        return registers[REGISTER_PL];
     }
 
     @Override
     public Long getIOPointer() {
-        return null;
+        return registers[REGISTER_IOP];
     }
 
     @Override
     public Long getHardwareRegister(int index) {
-        return null;
+        if (index == 0) {
+            return registers[REGISTER_HR0];
+        } else if (index == 1) {
+            return registers[REGISTER_HR1];
+        } else {
+            throw new UnsupportedOperationException("Invalid hardware register index: " + index);
+        }
     }
 
     @Override
     public Long getReturnRegister() {
-        return null;
+        return registers[REGISTER_RET];
     }
 
     @Override
     public MemoryDevice<Long> getMemoryDevice() {
-        return null;
+        return memory;
     }
 
     @Override

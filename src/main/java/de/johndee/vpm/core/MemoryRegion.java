@@ -18,4 +18,8 @@ public class MemoryRegion<Word extends Number> {
         return end;
     }
 
+    public static <Word extends Number> MemoryRegion<Word> of(Word start, Word end) {
+        return new MemoryRegion<Word>(start, end);
+    }
+
 }
