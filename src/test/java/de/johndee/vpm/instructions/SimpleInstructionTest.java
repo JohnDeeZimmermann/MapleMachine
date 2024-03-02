@@ -49,6 +49,51 @@ public class SimpleInstructionTest {
             }
 
             @Override
+            public void setStackPointer(Long value) {
+
+            }
+
+            @Override
+            public void setDynamicLink(Long value) {
+
+            }
+
+            @Override
+            public void setCompareResultRegister(Long value) {
+
+            }
+
+            @Override
+            public void setFramePointer(Long value) {
+
+            }
+
+            @Override
+            public void setProgramStart(Long value) {
+
+            }
+
+            @Override
+            public void setProgramLength(Long value) {
+
+            }
+
+            @Override
+            public void setIOPointer(Long value) {
+
+            }
+
+            @Override
+            public void setHardwareRegister(int index, Long value) {
+
+            }
+
+            @Override
+            public void setReturnRegister(Long value) {
+
+            }
+
+            @Override
             public Long step() {
                 return null;
             }
@@ -65,6 +110,51 @@ public class SimpleInstructionTest {
 
             @Override
             public Long getProgramCounter() {
+                return null;
+            }
+
+            @Override
+            public Long getStackPointer() {
+                return null;
+            }
+
+            @Override
+            public Long getDynamicLink() {
+                return null;
+            }
+
+            @Override
+            public Long getCompareResultRegister() {
+                return null;
+            }
+
+            @Override
+            public Long getFramePointer() {
+                return null;
+            }
+
+            @Override
+            public Long getProgramStart() {
+                return null;
+            }
+
+            @Override
+            public Long getProgramLength() {
+                return null;
+            }
+
+            @Override
+            public Long getIOPointer() {
+                return null;
+            }
+
+            @Override
+            public Long getHardwareRegister(int index) {
+                return null;
+            }
+
+            @Override
+            public Long getReturnRegister() {
                 return null;
             }
 
