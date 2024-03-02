@@ -2,6 +2,8 @@ package de.johndee.vpm.core;
 
 import de.johndee.vpm.exceptions.IllegalMemoryAccessException;
 
+import java.util.List;
+
 public interface MemoryDevice<Word extends Number> {
     /**
      * Read a single word from the memory device.
@@ -44,7 +46,7 @@ public interface MemoryDevice<Word extends Number> {
      * Get the memory regions marked as 'Controlled Access Regions'.
      * @return The memory regions marked as 'Controlled Access Regions'.
      */
-    MemoryRegion<Word>[] getCARs();
+    List<MemoryRegion<Word>> getCARs();
 
     /**
      * Get the memory region used as the stack region.

@@ -11,6 +11,15 @@ public interface Processor<Word extends Number> {
     void setRegisterValue(int registerID, Word value);
     void registerIODevice(IODevice<Word> ioDevice);
     void setProgramCounter(Word value);
+    void setStackPointer(Word value);
+    void setDynamicLink(Word value);
+    void setCompareResultRegister(Word value);
+    void setFramePointer(Word value);
+    void setProgramStart(Word value);
+    void setProgramLength(Word value);
+    void setIOPointer(Word value);
+    void setHardwareRegister(int index, Word value);
+    void setReturnRegister(Word value);
 
     /**
      * Make a single step from the current program counter.
@@ -20,6 +29,35 @@ public interface Processor<Word extends Number> {
     Word run(Word startAddress);
     Word getRegisterValue(int registerID);
     Word getProgramCounter();
+    Word getStackPointer();
+
+    /**
+     * The value of our dynamic link register.
+     * This usually gets set to the memory location after the function call
+     * @return
+     */
+    Word getDynamicLink();
+    Word getCompareResultRegister();
+
+    /**
+     * The frame pointer register.
+     * This usually points to the start of the usable memory block.
+     * @return
+     */
+    Word getFramePointer();
+    Word getProgramStart();
+    Word getProgramLength();
+    Word getIOPointer();
+    Word getHardwareRegister(int index);
+
+    /**
+     * The register, we store our return values in.
+     * Usually r0.
+     * @return The value of the register, we store our return values in.
+     */
+    Word getReturnRegister();
+
+
     MemoryDevice<Word> getMemoryDevice();
     List<IODevice<Word>> getIODevice();
 

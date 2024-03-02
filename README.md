@@ -26,18 +26,19 @@ Folgende Befehle können dazu verwendet werden:
 ### Register
 Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für alles mögliche verwendet werden. `r0` ist dabei standardmäßig unser Rückgaberegister.
 
-| Register      | Definition                                                                                                                                                                                                                  | Numerischer Wert  |
-|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| `r0`          | Return Register                                                                                                                                                                                                             | `0000`            |
-| `r1` bis `r9` | General-Purpose Register                                                                                                                                                                                                    | `0001` bis `0101` |
-| `sp`          | Stack Pointer                                                                                                                                                                                                               | `0110`            |
-| `pc`          | Programmzähler                                                                                                                                                                                                              | `0111`            |
-| `dl`          | Dynamic Link. Dieser wird verwendet, um den Speicherzugriff positionsunabhängig zu gestalten.<br><br>Er sollte immer auf den Anfang von Funktionen zeigen, da dieser demnach auch für den Rücksprung verwendet werden kann. | `1000`            |
-| `cr`/`mr`     | Compare oder Math Result: Dieser Register beinhaltet die Flags, die bei mathematischen Operationen gesetzt werden.                                                                                                          | `1001`            |
-| `iop`         | IOPointer: Zeigt auf ein IO-Device, mit welchem kommuniziert werden soll                                                                                                                                                    | `1010`            |
-| `ps`          | Program Start  - Zeigt auf das Anfang des Programms. Dient dem dynamischen Laden von Programmen                                                                                                                             | `1011`            |
-| `pl`          | Program Length - Die Länge in Wörtern, die für das Programm vorgesehen sind.                                                                                                                                                | `1100`            |
-| `h0` bis `h2` | Hardware Register - Diese Register sind für bestimmte Hardware-Funktionen reserviert.                                                                                                                                       | `1101` bis `1111` |
+| Register     | Definition                                                                                                         | Numerischer Wert  |
+|--------------|--------------------------------------------------------------------------------------------------------------------|-------------------|
+| `r0`         | Return Register                                                                                                    | `0000`            |
+| `r1` bis `r9` | General-Purpose Register                                                                                           | `0001` bis `0101` |
+| `sp`         | Stack Pointer                                                                                                      | `0110`            |
+| `pc`         | Programmzähler                                                                                                     | `0111`            |
+| `dl`         | Dynamic Link - Dieser zeigt auf eine Instruktion (Meist zum Rücksprung genutzt)                                    | `1000`            |
+| `cr`/`mr`    | Compare oder Math Result: Dieser Register beinhaltet die Flags, die bei mathematischen Operationen gesetzt werden. | `1001`            |
+| `iop`        | IOPointer: Zeigt auf ein IO-Device, mit welchem kommuniziert werden soll                                           | `1010`            |
+| `ps`         | Program Start  - Zeigt auf das Anfang des Programms. Dient dem dynamischen Laden von Programmen                    | `1011`            |
+| `pl`         | Program Length - Die Länge in Wörtern, die für das Programm vorgesehen sind.                                       | `1100`            |
+| `fp`          | Frame Pointer - Zeigt auf den Anfang des verwendbaren Speicherbereichs.                                            | `1001`            |
+| `h0` bis `h1` | Hardware Register - Diese Register sind für bestimmte Hardware-Funktionen reserviert.                              | `1110` bis `1111` |
 
 ### Instruktionen
 | Name                                | Verwendung                                                                   | Beschreibung                                                                                                          | OpCode      |
