@@ -31,4 +31,16 @@ public class MoveInstruction<Word extends Number> extends Instruction<Word>{
 
         throw new UnsupportedOperationException("Move Instruction not implemented");
     }
+
+    public Word getDestinationRegister() {
+        return rdest;
+    }
+
+    public Word getOptions() {
+        return option;
+    }
+
+    public Word getArgument() {
+        return rargs1;
+    }
 }

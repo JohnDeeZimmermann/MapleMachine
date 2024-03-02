@@ -3,6 +3,7 @@ package de.johndee.vpm.impl;
 import de.johndee.vpm.core.Processor;
 import de.johndee.vpm.instructions.BaseInstruction;
 import de.johndee.vpm.instructions.Instruction;
+import de.johndee.vpm.instructions.MoveInstruction;
 import de.johndee.vpm.utils.ArithmeticWrapper;
 
 public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
@@ -215,7 +216,21 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
                 result = result | (rargs2);
 
             return result;
-        } else
+        } else if (instruction instanceof MoveInstruction<Long>) {
+            MoveInstruction<Long> moveInstruction = (MoveInstruction<Long>) instruction;
+            Long opcode = moveInstruction.getOPCode();
+            Long rdest = moveInstruction.getDestinationRegister();
+            Long option = moveInstruction.getOptions();
+            Long args = moveInstruction.getArgument();
+
+            Long result = 0L;
+            result = result | (opcode << 56);
+            result = result | (option << 55);
+            result = result | (rdest << 51);
+            result = result | (args);
+
+            return result;
+        }
         
         
         else {

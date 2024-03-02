@@ -10,12 +10,15 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 public class SimpleInstructionTest {
 
     private Processor<Long> processor;
 
     @Test
-    public void testBinaryFormat() {
+    public void testBaseBinaryFormat() {
         ArithmeticIntegerInstruction<Long> baseInstruction = new ArithmeticIntegerInstruction<>(processor,
                 0L,
                 0b00000010L,
@@ -24,8 +27,33 @@ public class SimpleInstructionTest {
                 0b000000000000000000000011L,
                 0b000000000000000000100000L,
                 ArithmeticIntegerInstruction.Operator.ADD);
-        assert baseInstruction.getBinaryFormat().equals(
-                0b0000001000000001000000000000000000000011000000000000000000100000L
+
+        assertEquals(
+                (long) baseInstruction.getBinaryFormat(),
+                0b0000001000000001000000000000000000000011000000000000000000100000L);
+
+        assertNotEquals(
+                (long) baseInstruction.getBinaryFormat(),
+                0b0000001000000001000000000000000000000011000000000000000000100001L
+        );
+    }
+
+    @Test
+    public void testMoveBinaryFormat() {
+        MoveInstruction<Long> moveInstruction = new MoveInstruction<>(processor,
+                0L,
+                0b00000000L,
+                0b0010L,
+                0b0L,
+                128L << 1,
+                false);
+        assertEquals(
+                (long) moveInstruction.getBinaryFormat(),
+                0b0000000000010000000000000000000000000000000000000000000100000000L);
+
+        assertNotEquals(
+                (long) moveInstruction.getBinaryFormat(),
+                0b0000000000010000000000000000000000000000000000000000000100000001L
         );
     }
 
