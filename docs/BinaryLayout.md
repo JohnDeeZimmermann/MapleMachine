@@ -14,8 +14,8 @@ Each argument also contains an additional bit (to the right) which determines wh
 ##### Example
 `ADDI r1, r2, #16` would be represented as
 ```
-00000010 0000 0001 00000000000000000000001 1 00000000000000000010000 0
-OPCODE   OPT  DEST ARG1 (As register)        ARG2 (Directly)
+00000010 0000 0001 00000000000000000000010 1 00000000000000000010000 0
+OPCODE   OPT  DEST ARG1 (As register)      R ARG2 (Directly)         R
 ```
 ### Move, Move Not
 In order to store larger values (e.g. memory addresses exceeding 23 bits in size),MOV and MVN have a slightly different layout. 
@@ -27,5 +27,5 @@ _To achieve larger even larger addresses, one could always adjust the offset val
 `MOV r2, #128` would be translated to:
 ```
 00000000 0 0010 00000000000000000000000000000000000000000010000000 0
-OPCODE OPT DEST VALUE (Directly)
+OPCODE OPT DEST VALUE (Directly)                                   R
 ```
