@@ -9,11 +9,11 @@ This is made for simplicity and it does have drawbacks to standardize it like th
 Certain Operations will differ from this layout.
 
 `OPTIONS` contains additional information on the instruction. For example which _compare_ command should be executed.
-Each argument also contains an additional bit which determines whether the argument is stored in a register or directly.
+Each argument also contains an additional bit (to the right) which determines whether the argument is stored in a register or directly.
 
 ##### Example
 `ADDI r1, r2, #16` would be represented as
 ```
-00000010 0000 0001 100000000000000000000010 000000000000000000010000
+00000010 0000 0001 000000000000000000000011 000000000000000000100000
 OPCODE   OPT  DEST ARG1 (As register)       ARG2 (Directly)
 ```

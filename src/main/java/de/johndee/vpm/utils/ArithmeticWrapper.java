@@ -49,15 +49,7 @@ public interface ArithmeticWrapper<Word extends Number> {
     boolean isRBitSet(Word a, long bit);
 
     /**
-     * Check if a bit is set in a word. Counting from the left.
-     * @param a The word to check against
-     * @param bit The bit to check, counting from the left.
-     * @return True if the bit is set, false otherwise.
-     */
-    boolean isLBitSet(Word a, long bit);
-
-    /**
-     * Returns the value of a register or a value depending of the layout of the word.
+     * Returns the value of a register or a value depending on the layout of the word.
      * @param word The word to check
      * @param processor The processor to get the value from if read from register
      * @return The value of the register or the value of the word.
