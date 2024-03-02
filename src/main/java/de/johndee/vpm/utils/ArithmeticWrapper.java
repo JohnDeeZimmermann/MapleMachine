@@ -11,16 +11,25 @@ import de.johndee.vpm.instructions.Instruction;
 public interface ArithmeticWrapper<Word extends Number> {
 
     Word add(Word a, Word b);
+    Word add(Word a, byte b);
     Word sub(Word a, Word b);
+    Word sub(Word a, byte b);
     Word mul(Word a, Word b);
+    Word mul(Word a, byte b);
     Word div(Word a, Word b);
+    Word div(Word a, byte b);
 
     Word and(Word a, Word b);
+    Word and(Word a, byte b);
     Word or(Word a, Word b);
+    Word or(Word a, byte b);
     Word xor(Word a, Word b);
+    Word xor(Word a, byte b);
     Word not(Word a);
     Word lshift(Word a, Word b);
+    Word lshift(Word a, byte b);
     Word rshift(Word a, Word b);
+    Word rshift(Word a, byte b);
 
     boolean gt(Word a, Word b);
     boolean gt(Word a, byte b);

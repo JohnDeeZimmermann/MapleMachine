@@ -12,7 +12,17 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public Long add(Long a, byte b) {
+        return a + b;
+    }
+
+    @Override
     public Long sub(Long a, Long b) {
+        return a - b;
+    }
+
+    @Override
+    public Long sub(Long a, byte b) {
         return a - b;
     }
 
@@ -22,7 +32,17 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public Long mul(Long a, byte b) {
+        return a * b;
+    }
+
+    @Override
     public Long div(Long a, Long b) {
+        return a / b;
+    }
+
+    @Override
+    public Long div(Long a, byte b) {
         return a / b;
     }
 
@@ -32,7 +52,17 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public Long and(Long a, byte b) {
+        return a & b;
+    }
+
+    @Override
     public Long or(Long a, Long b) {
+        return a | b;
+    }
+
+    @Override
+    public Long or(Long a, byte b) {
         return a | b;
     }
 
@@ -42,9 +72,16 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public Long xor(Long a, byte b) {
+        return a ^ b;
+    }
+
+    @Override
     public Long not(Long a) {
         return ~a;
     }
+
+
 
     @Override
     public Long lshift(Long a, Long b) {
@@ -52,7 +89,17 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public Long lshift(Long a, byte b) {
+        return a << b;
+    }
+
+    @Override
     public Long rshift(Long a, Long b) {
+        return a >> b;
+    }
+
+    @Override
+    public Long rshift(Long a, byte b) {
         return a >> b;
     }
 
@@ -168,7 +215,10 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
                 result = result | (rargs2);
 
             return result;
-        } else {
+        } else
+        
+        
+        else {
             throw new UnsupportedOperationException("Instruction not supported: " + instruction);
         }
     }

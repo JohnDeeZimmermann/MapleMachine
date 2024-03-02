@@ -36,4 +36,5 @@ public abstract class Instruction<Word extends Number> {
      */
     public abstract void execute();
 
+
 }

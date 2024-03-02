@@ -17,6 +17,8 @@ public class ArithmeticFloatInstruction<Word extends Number> extends ArithmeticI
 
     @Override
     public void execute() {
+        //TODO : Not Implemented
 
+        throw new UnsupportedOperationException("Arithmetic Float Instruction not implemented");
     }
 }
