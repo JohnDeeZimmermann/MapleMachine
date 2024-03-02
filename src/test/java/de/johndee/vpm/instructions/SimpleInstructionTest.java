@@ -16,7 +16,7 @@ public class SimpleInstructionTest {
 
     @Test
     public void testBinaryFormat() {
-        ArithmeticIntegerInstruction<Long> instruction = new ArithmeticIntegerInstruction<>(processor,
+        ArithmeticIntegerInstruction<Long> baseInstruction = new ArithmeticIntegerInstruction<>(processor,
                 0L,
                 0b00000010L,
                 0b0001L,
@@ -24,7 +24,7 @@ public class SimpleInstructionTest {
                 0b000000000000000000000011L,
                 0b000000000000000000100000L,
                 ArithmeticIntegerInstruction.Operator.ADD);
-        assert instruction.getBinaryFormat().equals(
+        assert baseInstruction.getBinaryFormat().equals(
                 0b0000001000000001000000000000000000000011000000000000000000100000L
         );
     }
