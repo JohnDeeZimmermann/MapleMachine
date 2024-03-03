@@ -9,8 +9,16 @@ public class GetCompareResultInstruction<Word extends Number> extends Conditiona
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
+        var result = checkCondition();
 
-        throw new UnsupportedOperationException("Get Compare Result Instruction not implemented");
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
+        var register = getDestinationRegister();
+
+        if (result) {
+            proc.setRegisterValue(ar.getRegisterID(register), ar.fromInt(1));
+        } else {
+            proc.setRegisterValue(ar.getRegisterID(register), ar.fromInt(0));
+        }
     }
 }

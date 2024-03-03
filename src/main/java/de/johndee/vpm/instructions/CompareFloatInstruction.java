@@ -16,6 +16,14 @@ public class CompareFloatInstruction<Word extends Number> extends CompareInstruc
 
     @Override
     public void execute() {
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
 
+        Word arg1 = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        float arg1f = ar.reinterpretAsFloat(arg1);
+        Word arg2 = ar.getValueOrRegisterValue(getSecondArgument(), proc);
+        float arg2f = ar.reinterpretAsFloat(arg2);
+        float result = arg1f - arg2f;
+        ar.handleCompareRegisterOperationResult(arg1f, arg2f, result, proc);
     }
 }

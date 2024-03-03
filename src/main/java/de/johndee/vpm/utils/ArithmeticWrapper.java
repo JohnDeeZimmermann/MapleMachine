@@ -71,7 +71,12 @@ public interface ArithmeticWrapper<Word extends Number> {
 
     int getRegisterID(Word word);
 
+    int fromWord(Word word);
+
+    Word fromInt(int value);
+
     void handleCompareRegisterOperationResult(Word a, Word b, Word result, Processor<Word> processor);
+    void handleCompareRegisterOperationResult(float a, float b, float result, Processor<Word> processor);
 
     CRHandler<Word> getCRHandler(Processor<Word> processor);
 

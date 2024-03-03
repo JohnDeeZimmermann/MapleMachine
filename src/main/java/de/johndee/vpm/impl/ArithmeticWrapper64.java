@@ -209,6 +209,16 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public int fromWord(Long word) {
+        return (int) (long) word;
+    }
+
+    @Override
+    public Long fromInt(int value) {
+        return (long) value;
+    }
+
+    @Override
     public void handleCompareRegisterOperationResult(Long a, Long b, Long result, Processor<Long> processor) {
         CRHandler64 crHandler = new CRHandler64(processor);
 
@@ -219,6 +229,17 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
         long c = a * b;
         crHandler.setOverflow(c / b == a ? 0L : 1L);
         // TODO: NOT IMPLEMENTED crHandler.setParity();
+    }
+
+    @Override
+    public void handleCompareRegisterOperationResult(float a, float b, float result, Processor<Long> processor) {
+        CRHandler64 crHandler = new CRHandler64(processor);
+
+        crHandler.setEven((long) (result % 2 == 0 ? 1L : 0L));
+        crHandler.setNegative((long) (result < 0 ? 1L : 0L));
+        crHandler.setZero((long) (result == 0 ? 1L : 0L));
+        crHandler.setOverflow(0L);
+
     }
 
     @Override

@@ -15,8 +15,13 @@ public class CompareIntegerInstruction<Word extends Number> extends CompareInstr
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
 
-        throw new UnsupportedOperationException("Compare Integer Instruction not implemented");
+        Word arg1 = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        Word arg2 = ar.getValueOrRegisterValue(getSecondArgument(), proc);
+        Word result = ar.sub(arg1, arg2);
+
+        ar.handleCompareRegisterOperationResult(arg1, arg2, result, proc);
     }
 }
