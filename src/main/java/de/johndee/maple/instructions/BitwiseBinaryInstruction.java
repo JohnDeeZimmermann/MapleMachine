@@ -2,8 +2,8 @@ package de.johndee.maple.instructions;
 
 import de.johndee.maple.core.Processor;
 
-public class LogicalBinaryInstruction<Word extends Number> extends LogicalInstruction<Word>{
-    public LogicalBinaryInstruction(Processor<Word> processor,
+public class BitwiseBinaryInstruction<Word extends Number> extends BitwiseInstruction<Word> {
+    public BitwiseBinaryInstruction(Processor<Word> processor,
                                     Word address,
                                     Word OPCode,
                                     Word rdest,
@@ -25,4 +25,6 @@ public class LogicalBinaryInstruction<Word extends Number> extends LogicalInstru
                throw new IllegalArgumentException("Invalid option for LogicalBinaryInstruction");
        }
     }
+
+
 }

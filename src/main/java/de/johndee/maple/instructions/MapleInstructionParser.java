@@ -67,9 +67,9 @@ public class MapleInstructionParser {
             case 0b00010000:
                 return new BranchLinkInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010001:
-                return new LogicalShiftInstruction<>(processor, address, opCode, rd, opt, a1, a2);
+                return new BitwiseShiftInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010010:
-                return new LogicalBinaryInstruction<>(processor, address, opCode, rd, opt, a1, a2);
+                return new BitwiseBinaryInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010011:
                 return new LoadToRegisterInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010100:
