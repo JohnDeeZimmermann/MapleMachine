@@ -1,6 +1,9 @@
 package de.johndee.maple.instructions;
 
 import de.johndee.maple.core.Processor;
+import de.johndee.maple.utils.StackUtils;
+
+import java.util.Stack;
 
 public class PopPushInstruction<Word extends Number> extends BaseInstruction<Word> {
     private final Type type;
@@ -8,10 +11,12 @@ public class PopPushInstruction<Word extends Number> extends BaseInstruction<Wor
                               Word address,
                               Word OPCode,
                               Word rdest,
-                              Word option,
-                              Word rargs1,
-                              Word rargs2) {
-        super(processor, address, OPCode, rdest, option, rargs1, rargs2);
+                              Word option) {
+
+        super(processor, address, OPCode, rdest, option,
+                processor.getArithmeticWrapper().fromInt(0),
+                processor.getArithmeticWrapper().fromInt(0)
+        );
 
         if (option.intValue() == 0) {
             type = Type.POP;
@@ -25,6 +30,19 @@ public class PopPushInstruction<Word extends Number> extends BaseInstruction<Wor
     @Override
     public void execute() {
 
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
+
+        var register = ar.getRegisterID(getDestinationRegister());
+
+        if (type == Type.POP) {
+            Word value = StackUtils.pop(proc, this);
+            proc.setRegisterValue(register, value);
+        }
+        else if (type == Type.PUSH) {
+            Word value = proc.getRegisterValue(register);
+            StackUtils.push(proc, value, this);
+        }
     }
 
     public enum Type {

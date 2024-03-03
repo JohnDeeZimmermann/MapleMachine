@@ -75,7 +75,7 @@ public class MapleInstructionParser {
             case 0b00010100:
                 return new StoreFromRegisterInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010101:
-                return new PopPushInstruction<>(processor, address, opCode, rd, opt, a1, a2);
+                return new PopPushInstruction<>(processor, address, opCode, rd, opt);
 
             default:
                 throw new IllegalArgumentException("Unknown opcode: " + opCode);
