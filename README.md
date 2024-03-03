@@ -66,6 +66,8 @@ Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für all
 | Store to Memory from Register       | `STR reg, raddress, offset`                                                  | Speichert den im Register befindlichen Wert in den Speicher                                                           | `0001 0100` |
 | Pop / Push                          | `POP reg` / `PUSH reg`                                                       | Pushes the value stored in `reg` to the stack / Pops the value on the stack and stores it to `reg`                    | `0001 0101` |
 
+Other instructions in the future: `NOP`, `EXIT`, `SWI` `IOR`, `IOW` 
+
 ## Things to keep in mind 
 #### Floats
 When doing float operations, the values have to first be moved into registers.
