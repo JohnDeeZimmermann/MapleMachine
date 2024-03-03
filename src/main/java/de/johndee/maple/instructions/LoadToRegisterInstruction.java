@@ -1,6 +1,7 @@
 package de.johndee.maple.instructions;
 
 import de.johndee.maple.core.Processor;
+import de.johndee.maple.exceptions.IllegalMemoryAccessException;
 
 public class LoadToRegisterInstruction<Word extends Number> extends BaseInstruction<Word>{
     public LoadToRegisterInstruction(Processor<Word> processor,
@@ -11,12 +12,32 @@ public class LoadToRegisterInstruction<Word extends Number> extends BaseInstruct
                                      Word rargs1,
                                      Word rargs2) {
         super(processor, address, OPCode, rdest, option, rargs1, rargs2);
+
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
+
+        if (!ar.isRBitSet(rargs1, 0)) {
+            proc.error("First argument has to be a register.", this);
+        }
     }
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
+        var proc = getProcessor();
+        var mem = proc.getMemoryDevice();
+        var ar = proc.getArithmeticWrapper();
 
-        throw new UnsupportedOperationException("LoadToRegister Instruction not implemented");
+        int dest = ar.getRegisterID(getDestinationRegister());
+        var address = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        var offset = ar.getValueOrRegisterValue(getSecondArgument(), proc);
+
+        address = ar.add(address, offset);
+
+        try {
+            var result = mem.read(address, getAddress());
+            proc.setRegisterValue(dest, result);
+        } catch (IllegalMemoryAccessException e) {
+            proc.error(e.getMessage(), this);
+        }
     }
 }
