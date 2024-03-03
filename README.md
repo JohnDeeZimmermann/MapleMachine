@@ -9,7 +9,7 @@ Sie ist sehr nah an die ARM-Assembly Sprachen angelehnt. Es handelt sich hierbei
 - Interpreter
 
 
-### Speicher
+## Speicher
 Der Speicher beinhaltet 64-Bit Werte. In diesem befinden sich sowohl Programmcode, wie auch Datenwerte. Der *Stack* schrumpft dabei.
 ##### Controlled Access Region (CAR)
 Der Speicherzugriff kann über sogenannte CARs beschränkt werden.
@@ -23,7 +23,7 @@ Folgende Befehle können dazu verwendet werden:
 | CAR Remove              | `CARR ID`            | Entfernt eine Region mit gegebener ID                                                     | `1000 0001` |
 | CAR Stack Region Define | `CASD START END`     | Definiert den Stack und dessen Größe. Der Stack Pointer wird nicht automatisch verändert. | `1000 0010` |
 
-### Register
+## Register
 Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für alles mögliche verwendet werden. `r0` ist dabei standardmäßig unser Rückgaberegister.
 
 | Register      | Definition                                                                                                         | Numerischer Wert  |
@@ -42,17 +42,17 @@ Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für all
 
 ### Instruktionen
 | Name                                | Verwendung                                                                   | Beschreibung                                                                                                          | OpCode      |
-| ----------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------- |
+|-------------------------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|-------------|
 | Move                                | `MOV rdest src`                                                              | Kopiert den Wert von `src` nach `rdest`, wobei `rdest` ein Register sein muss.                                        | `0000 0000` |
 | Move Not                            | `MVN rdest src`                                                              | Wie `MOV`, nur werden hier die Bits negiert.                                                                          | `0000 0001` |
-| Add Integer                         | `ADDI regDest reg1` / `ADDI reg1, reg2, regDest`                             | Addiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`         | `0000 0010` |
-| Subtract Integer                    | `SUBI regDest reg1` / `SUBI reg1, reg2, regDest`                             | Subtrahiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`     | `0000 0011` |
-| Multiply Integer                    | `MULI regDest reg1` / `MULI reg1, reg2, regDest`                             | Multipliziert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`   | `0000 0100` |
-| Divide Integer                      | `DIVI regDest reg1` / `DIVI reg1, reg2, regDest`                             | Dividiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`.      | `0000 0101` |
-| Add Float                           | `ADDF regDest reg1` / `ADDF reg1, reg2, regDest`                             | Addiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`           | `0000 0110` |
-| Subtract Float                      | `SUBF regDest reg1` / `SUBF reg1, reg2, regDest`                             | Subtrahiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`       | `0000 0111` |
-| Multiply Float                      | `MULF regDest reg1` / `MULF reg1, reg2, regDest`                             | Multipliziert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`     | `0000 1000` |
-| Divide Float                        | `DIVF regDest reg1` / `DIVF reg1, reg2, regDest`                             | Dividiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`.        | `0000 1001` |
+| Add Integer                         | `ADDI rdest, a, b`                                                           | Addiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`         | `0000 0010` |
+| Subtract Integer                    | `SUBI rdest, a, b`                                                           | Subtrahiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`     | `0000 0011` |
+| Multiply Integer                    | `MULI rdest, a, b`                                                           | Multipliziert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`   | `0000 0100` |
+| Divide Integer                      | `DIVI rdest, a, b`                                                           | Dividiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`.      | `0000 0101` |
+| Add Float                           | `ADDF rdest, ra, rb`                                                         | Addiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`           | `0000 0110` |
+| Subtract Float                      | `SUBF rdest, ra, rb`                                                         | Subtrahiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`       | `0000 0111` |
+| Multiply Float                      | `MULF rdest, ra, rb`                                                         | Multipliziert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`     | `0000 1000` |
+| Divide Float                        | `DIVF rdest, ra, rb`                                                         | Dividiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`.        | `0000 1001` |
 | Conditional Skip                    | `SGE` / `SEQ` / ...                                                          | Überspringt die nächste Instruktion, sollte der Wert `true` sein.                                                     | `0000 1010` |
 | Compare Int                         | `CMPI reg1 reg2`                                                             | Vergleicht die Integer Werte der Register `reg1`und `reg2`. Setzt den `cr`-Register entsprechend des Vergleichs       | `0000 1011` |
 | Compare Float                       | `CMPF reg1 reg2`                                                             | Vergleicht die Float Werte der Register `reg1`und `reg2`. Setzt den `cr`-Register entsprechend des Vergleichs         | `0000 1100` |
@@ -66,5 +66,9 @@ Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für all
 | Store to Memory from Register       | `STR reg, raddress, offset`                                                  | Speichert den im Register befindlichen Wert in den Speicher                                                           | `0001 0100` |
 | Pop / Push                          | `POP reg` / `PUSH reg`                                                       | Pushes the value stored in `reg` to the stack / Pops the value on the stack and stores it to `reg`                    | `0001 0101` |
 
+## Things to keep in mind 
+#### Floats
+When doing float operations, the values have to first be moved into registers.
+The float operators do not support direct inputs for values but must instead rely on the register values.
 
-
+This is due to a limitation with floats, specifically that they need to fit into 32-bit. 

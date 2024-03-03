@@ -28,6 +28,7 @@ public class VPM64 implements Processor<Long> {
     private final Long[] registers;
     private final List<IODevice<Long>> ioDevices;
     private final MemoryDevice<Long> memory;
+    private final ArithmeticWrapper<Long> arithmeticWrapper = new ArithmeticWrapper64();
 
     public VPM64() {
         registers = new Long[16]; // 16 registers
@@ -199,6 +200,6 @@ public class VPM64 implements Processor<Long> {
 
     @Override
     public ArithmeticWrapper<Long> getArithmeticWrapper() {
-        return null;
+        return this.arithmeticWrapper;
     }
 }

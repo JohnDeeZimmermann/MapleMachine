@@ -165,6 +165,20 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     }
 
     @Override
+    public float reinterpretAsFloat(Long a) {
+        if (a > Integer.MAX_VALUE) {
+            throw new UnsupportedOperationException("Value too large to convert to float: " + a);
+        }
+
+        return Float.intBitsToFloat((int) (long) a);
+    }
+
+    @Override
+    public Long reinterpretAsWord(float a) {
+        return (long) Float.floatToRawIntBits(a);
+    }
+
+    @Override
     public boolean isRBitSet(Long a, long bit) {
         long mask = 0b1;
 

@@ -49,6 +49,9 @@ public interface ArithmeticWrapper<Word extends Number> {
     boolean le(Word a, Word b);
     boolean le(Word a, byte b);
 
+    float reinterpretAsFloat(Word a);
+    Word reinterpretAsWord(float a);
+
     /**
      * Check if a bit is set in a word. Counting from the right.
      * @param a The word to check against
