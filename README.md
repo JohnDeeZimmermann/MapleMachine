@@ -1,5 +1,5 @@
-# Virtual Playground Machine
-Die **Virtual Playground Machine** (*VPM*) ist eine virtuelle Maschine zu bildenden Zwecken. Das Ziel besteht darin, mehr über CPUs zu lernen und es möglich zu machen, mit I/O zu interagieren und eine einfache Grafikeinheit zu bedienen. Langfristig soll die Entwicklung eines Betriebssystems ermöglicht werden.
+# Maple Machine
+Die **Maple Machine** (*MapMac*) ist eine virtuelle Maschine zu bildenden Zwecken. Das Ziel besteht darin, mehr über CPUs zu lernen und es möglich zu machen, mit I/O zu interagieren und eine einfache Grafikeinheit zu bedienen. Langfristig soll die Entwicklung eines Betriebssystems ermöglicht werden.
 Sie ist sehr nah an die ARM-Assembly Sprachen angelehnt. Es handelt sich hierbei um eine Von-Neumann-Maschine.
 
 **Dieses Projekt soll enthalten:**

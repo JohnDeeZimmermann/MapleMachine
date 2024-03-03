@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>de.johndee</groupId>
-  <artifactId>VirtualPlaygroundMachine</artifactId>
+  <artifactId>MapleMachine</artifactId>
   <version>1.0</version>
 
   <name>VirtualPlaygroundMachine</name>
