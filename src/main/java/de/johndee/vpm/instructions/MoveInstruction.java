@@ -1,6 +1,7 @@
 package de.johndee.vpm.instructions;
 
 import de.johndee.vpm.core.Processor;
+import de.johndee.vpm.exceptions.IllegalMemoryAccessException;
 
 public class MoveInstruction<Word extends Number> extends Instruction<Word>{
     private boolean not = false;
@@ -27,9 +28,15 @@ public class MoveInstruction<Word extends Number> extends Instruction<Word>{
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
+        var proc = getProcessor();
+        var mem = proc.getMemoryDevice();
+        var ar = proc.getArithmeticWrapper();
 
-        throw new UnsupportedOperationException("Move Instruction not implemented");
+        Word dest = getDestinationRegister();
+        Word value = ar.getValueOrRegisterValue(getArgument(), proc);
+        if (not) value = ar.not(value);
+
+        proc.setRegisterValue(ar.getRegisterID(dest), value);
     }
 
     public Word getDestinationRegister() {
