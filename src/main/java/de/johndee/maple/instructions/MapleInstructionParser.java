@@ -2,7 +2,7 @@ package de.johndee.maple.instructions;
 
 import de.johndee.maple.core.Processor;
 
-public class VPM64InstructionParser {
+public class MapleInstructionParser {
 
     public static Instruction<Long> fromBinaryFormat(Processor<Long> processor, Long binaryFormat, Long address) {
         Instruction<Long> instruction = null;

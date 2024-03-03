@@ -36,7 +36,7 @@ public class SimpleInstructionTest {
     @Test
     public void testBaseDecode() {
         long rawInstruction = 0b0000001000000001000000000000000000000101000000000000000000100000L; // ADDI r1, r2, #16
-        var instruction = VPM64InstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
+        var instruction = MapleInstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
 
         assertTrue(instruction instanceof ArithmeticIntegerInstruction);
         assertEquals((long) instruction.getOPCode(), 0b00000010L);
@@ -51,7 +51,7 @@ public class SimpleInstructionTest {
     @Test
     public void testMoveDecode() {
         long rawInstruction = 0b0000000000010000000000000000000000000000000000000000000100000000L; // MOV r2, #128
-        var instruction = VPM64InstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
+        var instruction = MapleInstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
 
         assertTrue(instruction instanceof MoveInstruction);
         var move = (MoveInstruction<Long>) instruction;

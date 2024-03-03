@@ -3,7 +3,7 @@ package de.johndee.maple.impl;
 import de.johndee.maple.core.*;
 import de.johndee.maple.exceptions.IllegalMemoryAccessException;
 import de.johndee.maple.instructions.Instruction;
-import de.johndee.maple.instructions.VPM64InstructionParser;
+import de.johndee.maple.instructions.MapleInstructionParser;
 import de.johndee.maple.utils.ArithmeticWrapper;
 
 import java.util.ArrayList;
@@ -144,7 +144,7 @@ public class Maple64 implements Processor<Long> {
         try {
             var pc = getProgramCounter();
             var raw = memory.read(pc, -1L);
-            var instruction = VPM64InstructionParser.fromBinaryFormat(this, raw, pc);
+            var instruction = MapleInstructionParser.fromBinaryFormat(this, raw, pc);
             instruction.execute();
 
             setProgramCounter(pc + 1);
