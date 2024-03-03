@@ -1,6 +1,7 @@
 package de.johndee.maple.instructions;
 
 import de.johndee.maple.core.Processor;
+import de.johndee.maple.utils.StackUtils;
 
 public class BranchLinkInstruction<Word extends Number> extends BranchInstruction<Word>{
     public BranchLinkInstruction(Processor<Word> processor,
@@ -15,12 +16,12 @@ public class BranchLinkInstruction<Word extends Number> extends BranchInstructio
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
 
-        throw new UnsupportedOperationException("Branch Link Instruction not implemented");
+        super.execute();
 
-        // First remember the return address
-        // Then jump
-        // Then link to return address
+        StackUtils.push(proc, proc.getDynamicLink(), this);
+        proc.setDynamicLink(ar.add(getAddress(), (byte) 1));
     }
 }

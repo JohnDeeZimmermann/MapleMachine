@@ -15,8 +15,16 @@ public class BranchInstruction<Word extends Number> extends BaseInstruction<Word
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
 
-        throw new UnsupportedOperationException("Branch Instruction not implemented");
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
+
+        Word offset = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        Word dest = getDestinationRegister(); //The register that holds the address to jump to
+        Word pc = proc.getProgramCounter();
+
+        Word newPC = ar.sub(ar.add(pc, offset), (byte) 1); // -1 as the PC is going to increase by 1 after this instruction
+        proc.setProgramCounter(newPC);
+
     }
 }

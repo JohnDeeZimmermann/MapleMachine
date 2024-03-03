@@ -3,7 +3,7 @@ Die **Maple Machine** (*MapMac*) ist eine virtuelle Maschine zu bildenden Zwecke
 Sie ist sehr nah an die ARM-Assembly Sprachen angelehnt. Es handelt sich hierbei um eine Von-Neumann-Maschine.
 
 **Dieses Projekt soll enthalten:**
-- Einen Compiler (Assembly -> Objekt-Dateien)
+- Einen Compiler (Assembly → Objekt-Dateien)
 - Linker
 - Assembler
 - Interpreter
@@ -40,7 +40,7 @@ Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für all
 | `fp`          | Frame Pointer - Zeigt auf den Anfang des verwendbaren Speicherbereichs.                                            | `1001`            |
 | `h0` bis `h1` | Hardware Register - Diese Register sind für bestimmte Hardware-Funktionen reserviert.                              | `1110` bis `1111` |
 
-### Instruktionen
+## Instruktionen
 | Name                                | Verwendung                                                                   | Beschreibung                                                                                                          | OpCode      |
 |-------------------------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|-------------|
 | Move                                | `MOV rdest src`                                                              | Kopiert den Wert von `src` nach `rdest`, wobei `rdest` ein Register sein muss.                                        | `0000 0000` |
