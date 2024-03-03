@@ -1,5 +1,6 @@
 package de.johndee.vpm.core;
 
+import de.johndee.vpm.instructions.Instruction;
 import de.johndee.vpm.utils.ArithmeticWrapper;
 
 import java.util.List;
@@ -22,10 +23,28 @@ public interface Processor<Word extends Number> {
     void setReturnRegister(Word value);
 
     /**
+     * Asks the processor to terminate (stop)
+     */
+    void requestTermination();
+
+    void addOutputLogger(OutputLogger<Word> logger);
+    void addErrorLogger(OutputLogger<Word> logger);
+
+    void log(String message, Instruction<Word> source);
+    void error(String errorMessage, Instruction<Word> source);
+
+
+    /**
      * Make a single step from the current program counter.
      * @return The value of the program counter after the processor has stopped.
      */
     Word step();
+
+    /**
+     * Runs the processors until a termination flag is set.
+     * @param startAddress The address of the first address. From there, the processor will continue sequentially
+     * @return The last program counter
+     */
     Word run(Word startAddress);
     Word getRegisterValue(int registerID);
     Word getProgramCounter();

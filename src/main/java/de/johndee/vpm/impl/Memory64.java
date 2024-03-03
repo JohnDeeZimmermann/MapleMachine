@@ -19,7 +19,7 @@ public class Memory64 implements MemoryDevice<Long> {
     private final boolean isControlled;
     private final boolean cacheCAR;
 
-    private Long[] memory;
+    private final long[] memory;
     private byte[] CARCache;
     private int size;
 
@@ -27,7 +27,8 @@ public class Memory64 implements MemoryDevice<Long> {
                     boolean isControlled,
                     boolean cacheCAR,
                     MemoryRegion<Long> defaultStackRegion) {
-        memory = new Long[size];
+
+        memory = new long[size];
         this.isControlled = isControlled;
 
         controlledAccessRegions = new ArrayList<>();
@@ -136,7 +137,7 @@ public class Memory64 implements MemoryDevice<Long> {
 
 
         boolean value = false;
-        for (var car : controlledAccessRegions) {
+        for (MemoryRegion<Long> car : controlledAccessRegions) {
             if (address >= car.getStart() && address <= car.getEnd()) {
                 value = true;
                 break;

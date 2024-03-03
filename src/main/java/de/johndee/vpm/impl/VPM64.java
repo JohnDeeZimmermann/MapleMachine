@@ -1,14 +1,13 @@
 package de.johndee.vpm.impl;
 
-import de.johndee.vpm.core.IODevice;
-import de.johndee.vpm.core.MemoryDevice;
-import de.johndee.vpm.core.MemoryRegion;
-import de.johndee.vpm.core.Processor;
+import de.johndee.vpm.core.*;
 import de.johndee.vpm.exceptions.IllegalMemoryAccessException;
+import de.johndee.vpm.instructions.Instruction;
 import de.johndee.vpm.instructions.VPM64InstructionParser;
 import de.johndee.vpm.utils.ArithmeticWrapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VPM64 implements Processor<Long> {
@@ -26,16 +25,27 @@ public class VPM64 implements Processor<Long> {
     public final static int REGISTER_HR1 = 0b1111;
 
     private final Long[] registers;
+
     private final List<IODevice<Long>> ioDevices;
+    private final List<OutputLogger<Long>> outputLoggers;
+    private final List<OutputLogger<Long>> errorLoggers;
+
     private final MemoryDevice<Long> memory;
+
     private final ArithmeticWrapper<Long> arithmeticWrapper = new ArithmeticWrapper64();
+
+    private boolean terminationFlag = false;
 
     public VPM64() {
         registers = new Long[16]; // 16 registers
         ioDevices = new ArrayList<>(2);
+        outputLoggers = new ArrayList<>();
+        errorLoggers = new ArrayList<>();
 
-        memory = new Memory64(5000, true, true, MemoryRegion.of(4500L, 5000L));
-        setStackPointer(5000L);
+        memory = new Memory64(5000, true, true, MemoryRegion.of(4500L, 4999L));
+        setStackPointer(4999L);
+
+        Arrays.fill(registers, 0L);
     }
 
     @Override
@@ -105,6 +115,31 @@ public class VPM64 implements Processor<Long> {
     }
 
     @Override
+    public void requestTermination() {
+        terminationFlag = true;
+    }
+
+    @Override
+    public void addOutputLogger(OutputLogger<Long> logger) {
+        outputLoggers.add(logger);
+    }
+
+    @Override
+    public void addErrorLogger(OutputLogger<Long> logger) {
+        errorLoggers.add(logger);
+    }
+
+    @Override
+    public void log(String message, Instruction<Long> source) {
+        outputLoggers.forEach(logger -> logger.notify(message, source));
+    }
+
+    @Override
+    public void error(String errorMessage, Instruction<Long> source) {
+        errorLoggers.forEach(logger -> logger.notify(errorMessage, source));
+    }
+
+    @Override
     public Long step() {
         try {
             var pc = getProgramCounter();
@@ -124,7 +159,13 @@ public class VPM64 implements Processor<Long> {
 
     @Override
     public Long run(Long startAddress) {
-        return null;
+        setProgramCounter(startAddress);
+
+        while (!terminationFlag) {
+            step();
+        }
+
+        return getProgramCounter();
     }
 
     @Override
