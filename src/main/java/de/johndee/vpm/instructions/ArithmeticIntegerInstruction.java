@@ -44,5 +44,6 @@ public class ArithmeticIntegerInstruction<Word extends Number> extends Arithmeti
         }
 
         processor.setRegisterValue(registerID, result);
+        ar.handleCompareRegisterOperationResult(arg1, arg2, result, processor);
     }
 }

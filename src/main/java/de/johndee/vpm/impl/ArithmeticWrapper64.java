@@ -1,10 +1,14 @@
 package de.johndee.vpm.impl;
 
+import de.johndee.vpm.core.CRHandler;
 import de.johndee.vpm.core.Processor;
 import de.johndee.vpm.instructions.BaseInstruction;
 import de.johndee.vpm.instructions.Instruction;
 import de.johndee.vpm.instructions.MoveInstruction;
 import de.johndee.vpm.utils.ArithmeticWrapper;
+import de.johndee.vpm.utils.CRHandler64;
+
+import java.math.BigInteger;
 
 public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     @Override
@@ -202,6 +206,24 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     @Override
     public int getRegisterID(Long word) {
         return word.intValue();
+    }
+
+    @Override
+    public void handleCompareRegisterOperationResult(Long a, Long b, Long result, Processor<Long> processor) {
+        CRHandler64 crHandler = new CRHandler64(processor);
+
+        crHandler.setEven(result % 2 == 0 ? 1L : 0L);
+        crHandler.setNegative(result < 0 ? 1L : 0L);
+        crHandler.setZero(result == 0 ? 1L : 0L);
+
+        long c = a * b;
+        crHandler.setOverflow(c / b == a ? 0L : 1L);
+        // TODO: NOT IMPLEMENTED crHandler.setParity();
+    }
+
+    @Override
+    public CRHandler<Long> getCRHandler(Processor<Long> processor) {
+        return new CRHandler64(processor);
     }
 
     /**

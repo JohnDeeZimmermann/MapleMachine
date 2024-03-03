@@ -29,3 +29,12 @@ _To achieve larger even larger addresses, one could always adjust the offset val
 00000000 0 0010 00000000000000000000000000000000000000000010000000 0
 OPCODE OPT DEST VALUE (Directly)                                   R
 ```
+### Condition Result Register
+We use the `cr` register to store information about the last mathematical operation or comparison. 
+A comparison of `A and B` will simply be populated by the mathematical properties of `A - B`. 
+
+Additionally, it is used to store additonal system information.
+These are the flags set:
+```
+000000 | STORAGE-DVC (4) | GPU-DVC(4) | IO-DEVICES (4) | INTERRUPT-CODE (8) | INTERRUPT-RESULT (32) | SYS-STATUS(1) | PARITY(1) | EVEN(1) | NEGATIVE(1) | ZERO(1) | OVERFLOW (1) 
+```

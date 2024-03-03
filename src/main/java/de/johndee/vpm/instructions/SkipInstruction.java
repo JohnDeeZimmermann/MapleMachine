@@ -15,8 +15,17 @@ public class SkipInstruction<Word extends Number> extends ConditionalInstruction
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
+        boolean result = checkCondition();
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
 
-        throw new UnsupportedOperationException("Skip Instruction not implemented");
+
+        Word pc = proc.getProgramCounter();
+
+        if (result) {
+            pc = ar.add(pc, (byte) 1); //Skipping the next instruction
+            proc.setProgramCounter(pc);
+        }
+
     }
 }

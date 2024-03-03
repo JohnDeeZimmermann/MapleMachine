@@ -1,5 +1,6 @@
 package de.johndee.vpm.utils;
 
+import de.johndee.vpm.core.CRHandler;
 import de.johndee.vpm.core.Processor;
 import de.johndee.vpm.instructions.Instruction;
 
@@ -70,6 +71,9 @@ public interface ArithmeticWrapper<Word extends Number> {
 
     int getRegisterID(Word word);
 
+    void handleCompareRegisterOperationResult(Word a, Word b, Word result, Processor<Word> processor);
+
+    CRHandler<Word> getCRHandler(Processor<Word> processor);
 
     Word binaryInstructionFormat(Instruction<Word> instruction);
 
