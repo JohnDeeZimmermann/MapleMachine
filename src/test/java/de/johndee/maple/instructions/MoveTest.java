@@ -20,11 +20,10 @@ public class MoveTest {
         MoveInstruction<Long> instruction = new MoveInstruction<Long>(
                 processor,
                 0b0L,
-                0b0L,
+                OPCodes.MOV_MVN,
                 0b1L,
-                0b0L,
-                0b10000L, //8
-                false
+                MoveInstruction.OPTION_MOV,
+                0b10000L //8
         );
 
         instruction.execute();
@@ -41,11 +40,10 @@ public class MoveTest {
         MoveInstruction<Long> instruction = new MoveInstruction<Long>(
                 processor,
                 0b0L,
-                0b0L,
+                OPCodes.MOV_MVN,
                 0b1L,
-                0b0L,
-                0b101L, //register 2
-                false
+                MoveInstruction.OPTION_MOV,
+                0b101L //register 2
         );
 
         instruction.execute();
@@ -60,16 +58,15 @@ public class MoveTest {
         long value = 0x001100000000000000L;
         processor.setRegisterValue(2,
                 value
-                );
+        );
 
         MoveInstruction<Long> instruction = new MoveInstruction<Long>(
                 processor,
                 0b0L,
-                0b0L,
+                OPCodes.MOV_MVN,
                 0b1L,
-                0b0L,
-                0b101L, //register 2
-                true
+                MoveInstruction.OPTION_MVN,
+                0b101L //register 2
         );
 
         instruction.execute();

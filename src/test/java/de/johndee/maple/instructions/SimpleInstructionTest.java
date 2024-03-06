@@ -50,14 +50,14 @@ public class SimpleInstructionTest {
 
     @Test
     public void testMoveDecode() {
-        long rawInstruction = 0b0000000000010000000000000000000000000000000000000000000100000000L; // MOV r2, #128
+        long rawInstruction = 0b0000000100010000000000000000000000000000000000000000000100000000L; // MOV r2, #128
         var instruction = MapleInstructionParser.fromBinaryFormat(processor, rawInstruction, 0L);
 
         assertTrue(instruction instanceof MoveInstruction);
         var move = (MoveInstruction<Long>) instruction;
-        assertEquals((long) instruction.getOPCode(), 0L);
+        assertEquals((long) instruction.getOPCode(), OPCodes.MOV_MVN);
         assertEquals((long) move.getDestinationRegister(), 0b0010L);
-        assertEquals((long) move.getOptions(), 0b0L);
+        assertEquals((long) move.getOptions(), MoveInstruction.OPTION_MOV);
         assertEquals((long) move.getArgument(), 128L << 1);
     }
 
@@ -65,14 +65,13 @@ public class SimpleInstructionTest {
     public void testMoveBinaryFormat() {
         MoveInstruction<Long> moveInstruction = new MoveInstruction<>(processor,
                 0L,
-                0b00000000L,
+                OPCodes.MOV_MVN,
                 0b0010L,
-                0b0L,
-                128L << 1,
-                false);
+                MoveInstruction.OPTION_MOV,
+                128L << 1);
         assertEquals(
                 (long) moveInstruction.getBinaryFormat(),
-                0b0000000000010000000000000000000000000000000000000000000100000000L);
+                0b0000000100010000000000000000000000000000000000000000000100000000L);
 
         assertNotEquals(
                 (long) moveInstruction.getBinaryFormat(),
