@@ -9,9 +9,8 @@ public class BranchLinkInstruction<Word extends Number> extends BranchInstructio
                                  Word OPCode,
                                  Word rdest,
                                  Word option,
-                                 Word rargs1,
-                                 Word rargs2) {
-        super(processor, address, OPCode, rdest, option, rargs1, rargs2);
+                                 Word rargs1) {
+        super(processor, address, OPCode, rdest, option, rargs1);
     }
 
     @Override

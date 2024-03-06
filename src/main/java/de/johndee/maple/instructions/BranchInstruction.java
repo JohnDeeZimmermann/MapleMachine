@@ -8,9 +8,8 @@ public class BranchInstruction<Word extends Number> extends BaseInstruction<Word
                              Word OPCode,
                              Word rdest,
                              Word option,
-                             Word rargs1,
-                             Word rargs2) {
-        super(processor, address, OPCode, rdest, option, rargs1, rargs2);
+                             Word roffset) {
+        super(processor, address, OPCode, rdest, option, roffset, processor.getArithmeticWrapper().fromInt(0));
     }
 
     @Override
@@ -20,10 +19,12 @@ public class BranchInstruction<Word extends Number> extends BaseInstruction<Word
         var ar = proc.getArithmeticWrapper();
 
         Word offset = ar.getValueOrRegisterValue(getFirstArgument(), proc);
-        Word dest = getDestinationRegister(); //The register that holds the address to jump to
+        Word rdest = getDestinationRegister(); //The register that holds the address to jump to
 
-        Word pc = ar.sub(ar.add(dest, offset), (byte) 1); // -1 as the PC is going to increase by 1 after this instruction
+        Word value = proc.getRegisterValue(rdest.intValue());
+
+        Word pc = ar.add(value, offset);
+        pc = ar.sub(pc, (byte) 1); // -1 as the PC is going to increase by 1 after this instruction
         proc.setProgramCounter(pc);
-
     }
 }

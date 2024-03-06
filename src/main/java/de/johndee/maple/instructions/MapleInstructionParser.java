@@ -67,9 +67,9 @@ public class MapleInstructionParser {
             case 0b00001110:
                 return new ConditionalBranchInstruction<Long>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00001111:
-                return new BranchInstruction<>(processor, address, opCode, rd, opt, a1, a2);
+                return new BranchInstruction<>(processor, address, opCode, rd, opt, a1);
             case 0b00010000:
-                return new BranchLinkInstruction<>(processor, address, opCode, rd, opt, a1, a2);
+                return new BranchLinkInstruction<>(processor, address, opCode, rd, opt, a1);
             case 0b00010001:
                 return new BitwiseShiftInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010010:
