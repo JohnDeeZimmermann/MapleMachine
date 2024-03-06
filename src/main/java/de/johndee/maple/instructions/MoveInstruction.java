@@ -3,6 +3,10 @@ package de.johndee.maple.instructions;
 import de.johndee.maple.core.Processor;
 
 public class MoveInstruction<Word extends Number> extends Instruction<Word>{
+
+    public final static long OPTION_MOV = 0L;
+    public final static long OPTION_MVN = 1L;
+
     private boolean not = false;
 
     private final Word rdest;
@@ -14,15 +18,16 @@ public class MoveInstruction<Word extends Number> extends Instruction<Word>{
                            Word OPCode,
                            Word rdest,
                            Word option,
-                           Word rargs1,
-                           boolean not) {
+                           Word rargs1) {
         super(processor, address, OPCode);
 
         this.rdest = rdest;
         this.option = option;
         this.rargs1 = rargs1;
 
-        this.not = not;
+        var ar = processor.getArithmeticWrapper();
+
+        this.not = ar.eq(option, ar.fromInt(1));
     }
 
     @Override

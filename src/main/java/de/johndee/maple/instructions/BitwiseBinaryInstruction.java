@@ -3,6 +3,11 @@ package de.johndee.maple.instructions;
 import de.johndee.maple.core.Processor;
 
 public class BitwiseBinaryInstruction<Word extends Number> extends BitwiseInstruction<Word> {
+
+    public static final long OPTION_AND = 0L;
+    public static final long OPTION_OR = 1L;
+    public static final long OPTION_XOR = 2L;
+
     public BitwiseBinaryInstruction(Processor<Word> processor,
                                     Word address,
                                     Word OPCode,

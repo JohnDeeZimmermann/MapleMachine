@@ -9,8 +9,12 @@ public class MapleInstructionParser {
 
         long opCode = getBaseOPCode(binaryFormat);
 
+        if (opCode == 0) {
+            return new NopInstruction<>(processor, address, opCode);
+        }
+
         // Move and Move Not are following a different format
-        if (opCode == 0 || opCode == 1) {
+        if (opCode == 1) {
             return moveFromBinaryFormat(processor, binaryFormat, address, opCode);
         }
 
@@ -89,10 +93,8 @@ public class MapleInstructionParser {
         long a1 = getMoveArgument(binaryFormat);
 
         switch ((byte) opCode) {
-            case 0b00000000:
-                return new MoveInstruction<Long>(processor, address, opCode, rd, opt, a1, false);
             case 0b00000001:
-                return new MoveInstruction<Long>(processor, address, opCode, rd, opt, a1, true);
+                return new MoveInstruction<Long>(processor, address, opCode, rd, opt, a1);
             default:
                 throw new IllegalArgumentException("Unknown opcode: " + opCode);
         }

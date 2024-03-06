@@ -6,6 +6,10 @@ import de.johndee.maple.utils.StackUtils;
 import java.util.Stack;
 
 public class PopPushInstruction<Word extends Number> extends BaseInstruction<Word> {
+
+    public static final long OPTION_POP = 0L;
+    public static final long OPTION_PUSH = 1L;
+
     private final Type type;
     public PopPushInstruction(Processor<Word> processor,
                               Word address,

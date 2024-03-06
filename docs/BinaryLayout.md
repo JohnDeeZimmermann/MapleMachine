@@ -26,7 +26,7 @@ _To achieve larger even larger addresses, one could always adjust the offset val
 ##### Example
 `MOV r2, #128` would be translated to:
 ```
-00000000 0 0010 00000000000000000000000000000000000000000010000000 0
+00000001 0 0010 00000000000000000000000000000000000000000010000000 0
 OPCODE OPT DEST VALUE (Directly)                                   R
 ```
 ### Condition Result Register

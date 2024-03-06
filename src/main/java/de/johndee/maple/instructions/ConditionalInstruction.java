@@ -4,7 +4,14 @@ import de.johndee.maple.core.Processor;
 
 public abstract class ConditionalInstruction<Word extends Number> extends BaseInstruction<Word> {
 
-    private Condition condition;
+    public static final long OPTION_BASE_EQ = 0b0000L;
+    public static final long OPTION_BASE_NQ = 0b0010L;
+    public static final long OPTION_BASE_LT = 0b0100L;
+    public static final long OPTION_BASE_LE = 0b0110L;
+    public static final long OPTION_BASE_GT = 0b1000L;
+    public static final long OPTION_BASE_GE = 0b1010L;
+
+    private final Condition condition;
 
     public ConditionalInstruction(Processor<Word> processor,
                                   Word address,

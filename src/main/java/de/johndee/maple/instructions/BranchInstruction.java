@@ -21,10 +21,9 @@ public class BranchInstruction<Word extends Number> extends BaseInstruction<Word
 
         Word offset = ar.getValueOrRegisterValue(getFirstArgument(), proc);
         Word dest = getDestinationRegister(); //The register that holds the address to jump to
-        Word pc = proc.getProgramCounter();
 
-        Word newPC = ar.sub(ar.add(pc, offset), (byte) 1); // -1 as the PC is going to increase by 1 after this instruction
-        proc.setProgramCounter(newPC);
+        Word pc = ar.sub(ar.add(dest, offset), (byte) 1); // -1 as the PC is going to increase by 1 after this instruction
+        proc.setProgramCounter(pc);
 
     }
 }

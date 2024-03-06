@@ -3,6 +3,10 @@ package de.johndee.maple.instructions;
 import de.johndee.maple.core.Processor;
 
 public class BitwiseShiftInstruction<Word extends Number> extends BitwiseInstruction<Word> {
+
+    public static final long OPTION_LSL = 0L;
+    public static final long OPTION_LSR = 1L;
+
     public BitwiseShiftInstruction(Processor<Word> processor,
                                    Word address,
                                    Word OPCode,
