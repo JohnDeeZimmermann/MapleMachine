@@ -14,10 +14,10 @@ public class PopPushInstruction<Word extends Number> extends BaseInstruction<Wor
     public PopPushInstruction(Processor<Word> processor,
                               Word address,
                               Word OPCode,
-                              Word rdest,
+                              Word register,
                               Word option) {
 
-        super(processor, address, OPCode, rdest, option,
+        super(processor, address, OPCode, register, option,
                 processor.getArithmeticWrapper().fromInt(0),
                 processor.getArithmeticWrapper().fromInt(0)
         );

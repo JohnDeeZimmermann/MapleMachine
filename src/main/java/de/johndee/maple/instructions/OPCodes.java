@@ -22,6 +22,7 @@ public class OPCodes {
     public static final long AND_OR_XOR = 0b00010001L;
     public static final long LDR = 0b00010010L;
     public static final long STR = 0b00010011L;
+    public static final long POP_PUSH = 0b00010101L;
 
     public static final long CAR_DEFINE = 0b1000000L;
     public static final long CAR_REMOVE = 0b1000001L;

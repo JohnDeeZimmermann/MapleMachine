@@ -26,7 +26,7 @@ public class StackUtils {
         var memory = processor.getMemoryDevice();
         try {
             processor.setStackPointer(ar.add(sp, ar.fromInt(1)));
-            return memory.read(sp, source.getAddress());
+            return memory.read(processor.getStackPointer(), source.getAddress());
         } catch (IllegalMemoryAccessException e) {
             processor.error(e.getMessage(), source);
         }
