@@ -137,7 +137,7 @@ public class CRHandler64 implements CRHandler<Long> {
             throw new IllegalArgumentException("Invalid length for zero");
         }
         long currentCR = processor.getCompareResultRegister();
-        currentCR = zero << SHIFT_ZERO | (currentCR & ~MASK_ZERO);
+        currentCR = (zero << SHIFT_ZERO) | (currentCR & ~MASK_ZERO);
         processor.setCompareResultRegister(currentCR);
     }
 
@@ -151,7 +151,11 @@ public class CRHandler64 implements CRHandler<Long> {
     }
 
     public Long getStorageDeviceLocation() {
-        return (processor.getCompareResultRegister() & MASK_STORAGE_DVC) >> SHIFT_STORAGE_DVC;
+        long cr = processor.getCompareResultRegister();
+        long masked = processor.getCompareResultRegister() & MASK_STORAGE_DVC;
+        long shifted = masked >> SHIFT_STORAGE_DVC;
+
+        return shifted;
     }
 
     public Long getGPUDeviceLocation() {
