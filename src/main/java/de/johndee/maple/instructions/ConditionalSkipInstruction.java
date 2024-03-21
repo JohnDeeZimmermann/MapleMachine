@@ -9,8 +9,13 @@ public class ConditionalSkipInstruction<Word extends Number> extends Conditional
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
 
-        throw new UnsupportedOperationException("Conditional Skip Instruction not implemented");
+        var ar = getProcessor().getArithmeticWrapper();
+        boolean cond = this.checkCondition();
+
+        Word pc = getProcessor().getProgramCounter();
+        pc = ar.add(pc, (byte) 1); // Skip the next instruction
+
+        if (cond) getProcessor().setProgramCounter(pc);
     }
 }
