@@ -43,7 +43,7 @@ public abstract class ConditionalInstruction<Word extends Number> extends BaseIn
         }
     }
 
-    protected boolean checkCondition() {
+    public boolean checkCondition() {
         var ar = getProcessor().getArithmeticWrapper();
         var cr = ar.getCRHandler(getProcessor());
 

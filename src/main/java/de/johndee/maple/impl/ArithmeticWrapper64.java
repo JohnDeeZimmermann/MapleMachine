@@ -233,9 +233,9 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
     public void handleCompareRegisterOperationResult(float a, float b, float result, Processor<Long> processor) {
         CRHandler64 crHandler = new CRHandler64(processor);
 
-        crHandler.setEven((long) (result % 2 == 0 ? 1L : 0L));
-        crHandler.setNegative((long) (result < 0 ? 1L : 0L));
-        crHandler.setZero((long) (result == 0 ? 1L : 0L));
+        crHandler.setEven((result % 2 == 0 ? 1L : 0L));
+        crHandler.setNegative((result < 0 ? 1L : 0L));
+        crHandler.setZero((result == 0 ? 1L : 0L));
         crHandler.setOverflow(0L);
 
     }
