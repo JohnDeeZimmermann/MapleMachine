@@ -1,4 +1,4 @@
-package de.johndee.maple.instructions;
+package de.johndee.tests.instructions;
 
 import de.johndee.maple.core.CRHandler;
 import de.johndee.maple.core.Processor;

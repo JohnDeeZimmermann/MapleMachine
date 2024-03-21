@@ -1,7 +1,10 @@
-package de.johndee.maple.instructions;
+package de.johndee.tests.instructions;
 
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
+import de.johndee.maple.instructions.ArithmeticFloatInstruction;
+import de.johndee.maple.instructions.ArithmeticInstruction;
+import de.johndee.maple.instructions.ArithmeticIntegerInstruction;
 import org.junit.Before;
 import org.junit.Test;
 

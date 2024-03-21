@@ -1,7 +1,12 @@
-package de.johndee.maple.instructions;
+package de.johndee.tests.instructions;
 
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
+import de.johndee.maple.instructions.ArithmeticIntegerInstruction;
+import de.johndee.maple.instructions.MapleInstructionParser;
+import de.johndee.maple.instructions.MoveInstruction;
+import de.johndee.maple.instructions.OPCodes;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +60,7 @@ public class SimpleInstructionTest {
 
         assertTrue(instruction instanceof MoveInstruction);
         var move = (MoveInstruction<Long>) instruction;
-        assertEquals((long) instruction.getOPCode(), OPCodes.MOV_MVN);
+        Assert.assertEquals((long) instruction.getOPCode(), OPCodes.MOV_MVN);
         assertEquals((long) move.getDestinationRegister(), 0b0010L);
         assertEquals((long) move.getOptions(), MoveInstruction.OPTION_MOV);
         assertEquals((long) move.getArgument(), 128L << 1);

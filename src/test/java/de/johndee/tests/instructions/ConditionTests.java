@@ -1,7 +1,10 @@
-package de.johndee.maple.instructions;
+package de.johndee.tests.instructions;
 
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
+import de.johndee.maple.instructions.CompareFloatInstruction;
+import de.johndee.maple.instructions.CompareIntegerInstruction;
+import de.johndee.maple.instructions.OPCodes;
 import de.johndee.maple.utils.CRHandler64;
 import org.junit.Before;
 import org.junit.Test;
