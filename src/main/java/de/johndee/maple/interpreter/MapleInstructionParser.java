@@ -83,7 +83,8 @@ public class MapleInstructionParser {
                 return new PopPushInstruction<>(processor, address, opCode, rd, opt);
             case 0b00010110:
                 return new ExitInstruction<>(processor, address, opCode);
-            case
+            case 0b00010111:
+                return new IOInstruction<>(processor, address, opCode, rd, opt, a1, a2);
 
             default:
                 throw new IllegalArgumentException("Unknown opcode: " + opCode);
