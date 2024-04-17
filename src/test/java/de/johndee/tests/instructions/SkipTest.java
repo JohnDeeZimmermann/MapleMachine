@@ -3,6 +3,7 @@ package de.johndee.tests.instructions;
 
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
+import de.johndee.maple.instructions.CompareIntegerInstruction;
 import de.johndee.maple.instructions.ConditionalSkipInstruction;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,12 +13,14 @@ import static org.junit.Assert.assertEquals;
 public class SkipTest {
 
     private Processor<Long> processor;
-    private ConditionalSkipInstruction<Long> instruction;
+    private ConditionalSkipInstruction<Long> skip;
+    private CompareIntegerInstruction<Long> compare;
 
     @Before
     public void init() {
         processor = new Maple64();
-        instruction = new ConditionalSkipInstruction<Long>(
+
+        compare = new CompareIntegerInstruction<Long>(
                 processor,
                 0L,
                 0b10L,
@@ -26,6 +29,12 @@ public class SkipTest {
                 0b111L, //Register 3
                 0b10000L // Direct Value 8
         );
+
+        skip = new ConditionalSkipInstruction<Long>(
+                processor,
+                0L,
+                0b10L
+        );
     }
 
     @Test
@@ -33,7 +42,9 @@ public class SkipTest {
         processor.setRegisterValue(3, 8L);
         processor.setProgramCounter(0L);
 
-        instruction.execute();
+        compare.execute();
+
+        skip.execute();
 
         long result = processor.getProgramCounter();
 
@@ -45,7 +56,9 @@ public class SkipTest {
         processor.setRegisterValue(3, 0L);
         processor.setProgramCounter(0L);
 
-        instruction.execute();
+        compare.execute();
+
+        skip.execute();
 
         long result = processor.getProgramCounter();
 

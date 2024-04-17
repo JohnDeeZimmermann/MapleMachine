@@ -44,7 +44,7 @@ public class Memory64 implements MemoryDevice<Long> {
 
     @Override
     public Long read(Long address, Long rf) throws IllegalMemoryAccessException {
-        if (isInsideCAR(rf) && !isInsideCAR(address)) {
+        if (isAddressInCAR(rf) && !isAddressInCAR(address)) {
             throw new IllegalMemoryAccessException(address, 1, rf);
         }
 
@@ -55,7 +55,7 @@ public class Memory64 implements MemoryDevice<Long> {
     public Long[] read(Long address, Long length, Long rf) throws IllegalMemoryAccessException {
         Long[] ret = new Long[(int) (long) length];
         for (int i = 0; i < length; i++) {
-            if (isInsideCAR(rf) && !isInsideCAR(address + i)) {
+            if (isAddressInCAR(rf) && !isAddressInCAR(address + i)) {
                 throw new IllegalMemoryAccessException(address, length, rf);
             }
 
@@ -67,7 +67,7 @@ public class Memory64 implements MemoryDevice<Long> {
 
     @Override
     public void write(Long address, Long value, Long rf) throws IllegalMemoryAccessException {
-        if (isInsideCAR(rf) && !isInsideCAR(address)) {
+        if (isAddressInCAR(rf) && !isAddressInCAR(address)) {
             throw new IllegalMemoryAccessException(address, 1, rf);
         }
 
@@ -77,7 +77,7 @@ public class Memory64 implements MemoryDevice<Long> {
     @Override
     public void write(Long address, Long[] values, Long rf) throws IllegalMemoryAccessException {
         for (int i = 0; i < values.length; i++) {
-            if (isInsideCAR(rf) && !isInsideCAR(address + i)) {
+            if (isAddressInCAR(rf) && !isAddressInCAR(address + i)) {
                 throw new IllegalMemoryAccessException(address, values.length, rf);
             }
 
@@ -97,7 +97,7 @@ public class Memory64 implements MemoryDevice<Long> {
 
     @Override
     public void registerCAR(MemoryRegion<Long> region, Long rf) throws IllegalMemoryAccessException {
-        if (isInsideCAR(rf)) {
+        if (isAddressInCAR(rf)) {
             throw new IllegalMemoryAccessException(region.getStart(), region.getEnd(), rf);
         }
 
@@ -106,7 +106,7 @@ public class Memory64 implements MemoryDevice<Long> {
 
     @Override
     public void unregisterCAR(MemoryRegion<Long> region, Long rf) throws IllegalMemoryAccessException {
-        if (isInsideCAR(rf)) {
+        if (isAddressInCAR(rf)) {
             throw new IllegalMemoryAccessException(region.getStart(), region.getEnd(), rf);
         }
 
@@ -115,14 +115,26 @@ public class Memory64 implements MemoryDevice<Long> {
 
     @Override
     public void setStackRegion(MemoryRegion<Long> region, Long rf) throws IllegalMemoryAccessException {
-        if (isInsideCAR(rf)) {
+        if (isAddressInCAR(rf)) {
             throw new IllegalMemoryAccessException(region.getStart(), region.getEnd(), rf);
         }
 
         stackRegion = region;
     }
 
-    public boolean isInsideCAR(Long address) {
+    @Override
+    public boolean isRegionInCAR(MemoryRegion<Long> region) {
+        for (long i = region.getStart(); i < region.getEnd() + 1; i++) {
+            if (isAddressInCAR(i)) {
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+
+    public boolean isAddressInCAR(Long address) {
         if (!isControlled) {
             return false;
         }

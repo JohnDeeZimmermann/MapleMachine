@@ -3,7 +3,7 @@ package de.johndee.tests.instructions;
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
 import de.johndee.maple.instructions.ArithmeticIntegerInstruction;
-import de.johndee.maple.instructions.MapleInstructionParser;
+import de.johndee.maple.interpreter.MapleInstructionParser;
 import de.johndee.maple.instructions.MoveInstruction;
 import de.johndee.maple.instructions.OPCodes;
 import org.junit.Assert;

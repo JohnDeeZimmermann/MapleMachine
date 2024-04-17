@@ -30,4 +30,10 @@ public interface IODevice<Word extends Number> {
      * @param values The values to write.
      */
     void write(Word address, Word[] values);
+
+    boolean isProtected();
+
+    String getName();
+
+    int getID();
 }

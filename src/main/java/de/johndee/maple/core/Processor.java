@@ -78,7 +78,9 @@ public interface Processor<Word extends Number> {
 
 
     MemoryDevice<Word> getMemoryDevice();
-    List<IODevice<Word>> getIODevice();
+    List<IODevice<Word>> getIODevices();
+
+    IODevice<Word> getSelectedIODevice();
 
     ArithmeticWrapper<Word> getArithmeticWrapper();
 

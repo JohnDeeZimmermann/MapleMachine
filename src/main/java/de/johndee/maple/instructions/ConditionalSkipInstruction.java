@@ -3,8 +3,14 @@ package de.johndee.maple.instructions;
 import de.johndee.maple.core.Processor;
 
 public class ConditionalSkipInstruction<Word extends Number> extends ConditionalInstruction<Word>{
-    public ConditionalSkipInstruction(Processor<Word> processor, Word address, Word OPCode, Word rdest, Word option, Word rargs1, Word rargs2) {
-        super(processor, address, OPCode, rdest, option, rargs1, rargs2);
+    public ConditionalSkipInstruction(Processor<Word> processor, Word address, Word OPCode) {
+        super(processor,
+                address,
+                OPCode,
+                processor.getArithmeticWrapper().fromInt(0),
+                processor.getArithmeticWrapper().fromInt(0),
+                processor.getArithmeticWrapper().fromInt(0),
+                processor.getArithmeticWrapper().fromInt(0));
     }
 
     @Override
@@ -13,9 +19,11 @@ public class ConditionalSkipInstruction<Word extends Number> extends Conditional
         var ar = getProcessor().getArithmeticWrapper();
         boolean cond = this.checkCondition();
 
+        if (!cond) return;
+
         Word pc = getProcessor().getProgramCounter();
         pc = ar.add(pc, (byte) 1); // Skip the next instruction
 
-        if (cond) getProcessor().setProgramCounter(pc);
+        getProcessor().setProgramCounter(pc);
     }
 }

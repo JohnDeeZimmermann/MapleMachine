@@ -1,6 +1,7 @@
-package de.johndee.maple.instructions;
+package de.johndee.maple.interpreter;
 
 import de.johndee.maple.core.Processor;
+import de.johndee.maple.instructions.*;
 
 public class MapleInstructionParser {
 
@@ -57,7 +58,7 @@ public class MapleInstructionParser {
                 return new ArithmeticFloatInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticInstruction.Operator.DIV);
             case 0b00001010:
-                return new SkipInstruction<>(processor, address, opCode, rd, opt, a1, a2);
+                return new ConditionalSkipInstruction<>(processor, address, opCode);
             case 0b00001011:
                 return new CompareIntegerInstruction<Long>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00001100:
@@ -80,6 +81,9 @@ public class MapleInstructionParser {
                 return new StoreFromRegisterInstruction<>(processor, address, opCode, rd, opt, a1, a2);
             case 0b00010101:
                 return new PopPushInstruction<>(processor, address, opCode, rd, opt);
+            case 0b00010110:
+                return new ExitInstruction<>(processor, address, opCode);
+            case
 
             default:
                 throw new IllegalArgumentException("Unknown opcode: " + opCode);

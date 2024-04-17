@@ -3,7 +3,7 @@ package de.johndee.maple.impl;
 import de.johndee.maple.core.*;
 import de.johndee.maple.exceptions.IllegalMemoryAccessException;
 import de.johndee.maple.instructions.Instruction;
-import de.johndee.maple.instructions.MapleInstructionParser;
+import de.johndee.maple.interpreter.MapleInstructionParser;
 import de.johndee.maple.utils.ArithmeticWrapper;
 
 import java.util.ArrayList;
@@ -235,8 +235,19 @@ public class Maple64 implements Processor<Long> {
     }
 
     @Override
-    public List<IODevice<Long>> getIODevice() {
+    public List<IODevice<Long>> getIODevices() {
         return null;
+    }
+
+    @Override
+    public IODevice<Long> getSelectedIODevice() {
+        long pointer = getIOPointer();
+
+        if (ioDevices.size() < pointer || pointer < 0)
+            throw new UnsupportedOperationException("Cannot access IO device that is not set. " +
+                    "Tried to access io device from io pointer: " + pointer);
+
+        return ioDevices.get((int) pointer);
     }
 
     @Override

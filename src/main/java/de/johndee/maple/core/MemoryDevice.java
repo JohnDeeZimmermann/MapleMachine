@@ -78,4 +78,8 @@ public interface MemoryDevice<Word extends Number> {
      */
     void setStackRegion(MemoryRegion<Word> region, Word rf) throws IllegalMemoryAccessException;
 
+    boolean isRegionInCAR(MemoryRegion<Word> region);
+
+    boolean isAddressInCAR(Word address);
+
 }
