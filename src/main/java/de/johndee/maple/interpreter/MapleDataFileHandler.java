@@ -16,7 +16,7 @@ public class MapleDataFileHandler {
             throw new UnsupportedOperationException("The provided path is no file: " + filePath);
         }
 
-        if (!filePath.getFileName().toString().contains(".maple")) {
+        if (!filePath.getFileName().toString().endsWith(".maple")) {
             throw new UnsupportedOperationException("The provided file is not a .maple file: " + filePath);
         }
 
@@ -47,7 +47,7 @@ public class MapleDataFileHandler {
             throw new UnsupportedOperationException("The provided path is no file: " + filePath);
         }
 
-        if (!filePath.getFileName().toString().contains(".maple")) {
+        if (!filePath.getFileName().toString().endsWith(".mapletext")) {
             throw new UnsupportedOperationException("The provided file is not a .maple file: " + filePath);
         }
 

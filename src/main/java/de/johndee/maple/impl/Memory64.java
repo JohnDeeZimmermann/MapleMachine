@@ -135,6 +135,10 @@ public class Memory64 implements MemoryDevice<Long> {
     }
 
     public boolean isAddressInCAR(Long address) {
+        if (address < 0 || address >= size) {
+            return false;
+        }
+
         if (!isControlled) {
             return false;
         }
