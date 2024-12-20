@@ -4,7 +4,7 @@ import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
 import de.johndee.maple.instructions.CompareFloatInstruction;
 import de.johndee.maple.instructions.CompareIntegerInstruction;
-import de.johndee.maple.instructions.OPCodes;
+import de.johndee.maple.instructions.MapleBinaryCodes;
 import de.johndee.maple.utils.CRHandler64;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class ConditionTests {
         var instruction = new CompareIntegerInstruction<Long>(
                 this.processor,
                 0L,
-                OPCodes.CMPI,
+                MapleBinaryCodes.CMPI,
                 0L,
                 0L,
                 0b11L,
@@ -55,7 +55,7 @@ public class ConditionTests {
         var instruction = new CompareFloatInstruction<Long>(
                 this.processor,
                 0L,
-                OPCodes.CMPF,
+                MapleBinaryCodes.CMPF,
                 0L,
                 0L,
                 0b11L,

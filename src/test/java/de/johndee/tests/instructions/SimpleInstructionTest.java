@@ -5,7 +5,7 @@ import de.johndee.maple.impl.Maple64;
 import de.johndee.maple.instructions.ArithmeticIntegerInstruction;
 import de.johndee.maple.interpreter.MapleInstructionParser;
 import de.johndee.maple.instructions.MoveInstruction;
-import de.johndee.maple.instructions.OPCodes;
+import de.johndee.maple.instructions.MapleBinaryCodes;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class SimpleInstructionTest {
 
         assertTrue(instruction instanceof MoveInstruction);
         var move = (MoveInstruction<Long>) instruction;
-        Assert.assertEquals((long) instruction.getOPCode(), OPCodes.MOV_MVN);
+        Assert.assertEquals((long) instruction.getOPCode(), MapleBinaryCodes.MOV_MVN);
         assertEquals((long) move.getDestinationRegister(), 0b0010L);
         assertEquals((long) move.getOptions(), MoveInstruction.OPTION_MOV);
         assertEquals((long) move.getArgument(), 128L << 1);
@@ -70,7 +70,7 @@ public class SimpleInstructionTest {
     public void testMoveBinaryFormat() {
         MoveInstruction<Long> moveInstruction = new MoveInstruction<>(processor,
                 0L,
-                OPCodes.MOV_MVN,
+                MapleBinaryCodes.MOV_MVN,
                 0b0010L,
                 MoveInstruction.OPTION_MOV,
                 128L << 1);

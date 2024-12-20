@@ -3,7 +3,7 @@ package de.johndee.tests.instructions;
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
 import de.johndee.maple.instructions.MoveInstruction;
-import de.johndee.maple.instructions.OPCodes;
+import de.johndee.maple.instructions.MapleBinaryCodes;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class MoveTest {
         MoveInstruction<Long> instruction = new MoveInstruction<Long>(
                 processor,
                 0b0L,
-                OPCodes.MOV_MVN,
+                MapleBinaryCodes.MOV_MVN,
                 0b1L,
                 MoveInstruction.OPTION_MOV,
                 0b10000L //8
@@ -42,7 +42,7 @@ public class MoveTest {
         MoveInstruction<Long> instruction = new MoveInstruction<Long>(
                 processor,
                 0b0L,
-                OPCodes.MOV_MVN,
+                MapleBinaryCodes.MOV_MVN,
                 0b1L,
                 MoveInstruction.OPTION_MOV,
                 0b101L //register 2
@@ -65,7 +65,7 @@ public class MoveTest {
         MoveInstruction<Long> instruction = new MoveInstruction<Long>(
                 processor,
                 0b0L,
-                OPCodes.MOV_MVN,
+                MapleBinaryCodes.MOV_MVN,
                 0b1L,
                 MoveInstruction.OPTION_MVN,
                 0b101L //register 2

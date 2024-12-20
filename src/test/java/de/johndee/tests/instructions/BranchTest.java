@@ -4,7 +4,7 @@ import de.johndee.maple.core.Processor;
 import de.johndee.maple.impl.Maple64;
 import de.johndee.maple.instructions.BranchInstruction;
 import de.johndee.maple.instructions.Instruction;
-import de.johndee.maple.instructions.OPCodes;
+import de.johndee.maple.instructions.MapleBinaryCodes;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class BranchTest {
         Instruction<Long> instruction = new BranchInstruction<>(
             processor,
             0b0L,
-                OPCodes.BRANCH,
+                MapleBinaryCodes.BRANCH,
                 1L,
                 0L,
                 0L
@@ -47,7 +47,7 @@ public class BranchTest {
         Instruction<Long> instruction = new BranchInstruction<>(
                 processor,
                 0b0L,
-                OPCodes.BRANCH,
+                MapleBinaryCodes.BRANCH,
                 1L,
                 0L,
                 0b10000L // Offset of 8

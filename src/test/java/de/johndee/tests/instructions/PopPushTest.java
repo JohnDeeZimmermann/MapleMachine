@@ -3,7 +3,7 @@ package de.johndee.tests.instructions;
 import de.johndee.maple.core.Processor;
 import de.johndee.maple.exceptions.IllegalMemoryAccessException;
 import de.johndee.maple.impl.Maple64;
-import de.johndee.maple.instructions.OPCodes;
+import de.johndee.maple.instructions.MapleBinaryCodes;
 import de.johndee.maple.instructions.PopPushInstruction;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class PopPushTest {
         PopPushInstruction<Long> push = new PopPushInstruction<>(
                 processor,
                 0L,
-                OPCodes.POP_PUSH,
+                MapleBinaryCodes.POP_PUSH,
                 1L,
                 PopPushInstruction.OPTION_PUSH
         );
@@ -59,7 +59,7 @@ public class PopPushTest {
         PopPushInstruction<Long> pop = new PopPushInstruction<>(
                 processor,
                 0L,
-                OPCodes.POP_PUSH,
+                MapleBinaryCodes.POP_PUSH,
                 1L,
                 PopPushInstruction.OPTION_POP
         );

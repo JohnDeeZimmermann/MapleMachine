@@ -5,7 +5,7 @@ import de.johndee.maple.impl.Maple64;
 import de.johndee.maple.instructions.BitwiseBinaryInstruction;
 import de.johndee.maple.instructions.BitwiseShiftInstruction;
 import de.johndee.maple.instructions.Instruction;
-import de.johndee.maple.instructions.OPCodes;
+import de.johndee.maple.instructions.MapleBinaryCodes;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class BitwiseTest {
         BitwiseBinaryInstruction<Long> instruction = new BitwiseBinaryInstruction<>(
                 processor,
                 0L,
-                OPCodes.AND_OR_XOR,
+                MapleBinaryCodes.AND_OR_XOR,
                 0L,
                 BitwiseBinaryInstruction.OPTION_AND,
                 0b11L,
@@ -54,7 +54,7 @@ public class BitwiseTest {
         BitwiseBinaryInstruction<Long> instruction = new BitwiseBinaryInstruction<>(
                 processor,
                 0L,
-                OPCodes.AND_OR_XOR,
+                MapleBinaryCodes.AND_OR_XOR,
                 0L,
                 BitwiseBinaryInstruction.OPTION_OR,
                 0b11L,
@@ -79,7 +79,7 @@ public class BitwiseTest {
         BitwiseBinaryInstruction<Long> instruction = new BitwiseBinaryInstruction<>(
                 processor,
                 0L,
-                OPCodes.AND_OR_XOR,
+                MapleBinaryCodes.AND_OR_XOR,
                 0L,
                 BitwiseBinaryInstruction.OPTION_XOR,
                 0b11L,
@@ -103,7 +103,7 @@ public class BitwiseTest {
         Instruction<Long> instruction = new BitwiseShiftInstruction<>(
                 processor,
                 0L,
-                OPCodes.SHIFT,
+                MapleBinaryCodes.SHIFT,
                 0L,
                 BitwiseShiftInstruction.OPTION_LSL,
                 0b11L,
@@ -127,7 +127,7 @@ public class BitwiseTest {
         Instruction<Long> instruction = new BitwiseShiftInstruction<>(
                 processor,
                 0L,
-                OPCodes.SHIFT,
+                MapleBinaryCodes.SHIFT,
                 0L,
                 BitwiseShiftInstruction.OPTION_LSR,
                 0b11L,

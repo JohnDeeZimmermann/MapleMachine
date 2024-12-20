@@ -254,4 +254,8 @@ public class Maple64 implements Processor<Long> {
     public ArithmeticWrapper<Long> getArithmeticWrapper() {
         return this.arithmeticWrapper;
     }
+
+    public Long[] getRegisters() {
+        return registers;
+    }
 }

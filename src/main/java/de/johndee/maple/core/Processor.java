@@ -84,4 +84,6 @@ public interface Processor<Word extends Number> {
 
     ArithmeticWrapper<Word> getArithmeticWrapper();
 
+    Word[] getRegisters();
+
 }

@@ -33,6 +33,7 @@ public class CLIInterpreter {
                 System.out.println("lf [PATH] [ADDRESS] - Load a file into memory at the specified address.");
                 System.out.println("rf [ADDRESS] - Run the program starting from the specified address.");
                 System.out.println("peek [ADDRESS] - Peek at the memory at the specified address.");
+                System.out.println("lr - Lists the register values.");
                 System.out.println("exit - Exit the interpreter.");
             }
 
@@ -73,6 +74,10 @@ public class CLIInterpreter {
                     System.out.println("Please enter a valid number: Try >peek [ADDRESS]");
                     continue;
                 }
+            }
+
+            else if (parts[0].equalsIgnoreCase("lr") || parts[0].equalsIgnoreCase("listregisters")) {
+                listRegisters();
             }
 
             else if (parts[0].equalsIgnoreCase("exit")) {
@@ -125,5 +130,9 @@ public class CLIInterpreter {
         } catch (IllegalMemoryAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private void listRegisters() {
+        System.out.println(Arrays.toString(maple.getRegisters()));
     }
 }

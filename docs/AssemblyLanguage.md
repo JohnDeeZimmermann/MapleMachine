@@ -22,6 +22,23 @@ Label's will be stored as an offset to the program start, with the first line to
 
 Using Pre-Assembly instructions, it is possible to export labels in order to be called by other files, which include the current file. To call exported labels of other files, the other file has to be named during inclusion. The label will then be referenced by the name of the file, followed by `.`, followed by the name of the label. For example: `@FILE.LABEL`
 
+A label can also be followed immediately by an _instruction_. That way, you could name data or create jump tables or simply reduce instruction space.
+Example: `.LABEL B #17` would immediately jump to address of value 17 when jumping to the label `LABEL`. 
+
+### Data
+In order to write data, just write nothing except the data into the line. 
+Floats are always indicated by entering a decimal value. 
+##### Numeric Data
+Just as with instructions, numeric values are denoted by a `#`, followed by the number, starting with `0b` for binary,`0x` for hexadecimal, or without any prefix for decimal values.
+##### String Values
+In order to write Strings into memory, simply write the string in quotation marks. 
+The length of the string is always limited to 8 characters.
+
+The strings characters will be stored in reverse order in ASCII-notation. So 8 characters, one byte each will be stored in a 64 bit word. 
+So for example "Hello", having 5 characters, would be stored as `b0 b0 b0 O L L E H`, represented as a byte each. 
+
+In order to have longer strings, the string would have to be split up across multiple lines.
+
 ### Pre-Assembly Instructions
 To instruct the Pre-Assembler, instructions will have to denoted with a `$: `. 
 

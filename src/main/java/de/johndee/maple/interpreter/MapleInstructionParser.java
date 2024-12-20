@@ -33,57 +33,57 @@ public class MapleInstructionParser {
 
 
         switch ((byte) opCode) {
-            case 0b00000010:
+            case (byte) MapleBinaryCodes.ADDI:
                 return new ArithmeticIntegerInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticIntegerInstruction.Operator.ADD);
-            case 0b00000011:
+            case (byte) MapleBinaryCodes.SUBI:
                 return new ArithmeticIntegerInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticIntegerInstruction.Operator.SUB);
-            case 0b00000100:
+            case (byte) MapleBinaryCodes.MULI:
                 return new ArithmeticIntegerInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticIntegerInstruction.Operator.MUL);
-            case 0b00000101:
+            case (byte) MapleBinaryCodes.DIVI:
                 return new ArithmeticIntegerInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticIntegerInstruction.Operator.DIV);
-            case 0b00000110:
+            case (byte) MapleBinaryCodes.ADDF:
                 return new ArithmeticFloatInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticIntegerInstruction.Operator.ADD);
-            case 0b00000111:
+            case (byte) MapleBinaryCodes.SUBF:
                 return new ArithmeticFloatInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticIntegerInstruction.Operator.SUB);
-            case 0b00001000:
+            case (byte) MapleBinaryCodes.MULF:
                 return new ArithmeticFloatInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticInstruction.Operator.MUL);
-            case 0b00001001:
+            case (byte) MapleBinaryCodes.DIVF:
                 return new ArithmeticFloatInstruction<Long>(processor, address, opCode, rd, opt, a1, a2,
                         ArithmeticInstruction.Operator.DIV);
-            case 0b00001010:
+            case (byte) MapleBinaryCodes.COND_SKIP:
                 return new ConditionalSkipInstruction<>(processor, address, opCode);
-            case 0b00001011:
+            case (byte) MapleBinaryCodes.CMPI:
                 return new CompareIntegerInstruction<Long>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00001100:
+            case (byte) MapleBinaryCodes.CMPF:
                 return new CompareFloatInstruction<Long>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00001101:
+            case (byte) MapleBinaryCodes.COMP_STORE_RESULT:
                 return new GetCompareResultInstruction<Long>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00001110:
+            case (byte) MapleBinaryCodes.COND_BRANCH:
                 return new ConditionalBranchInstruction<Long>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00001111:
+            case (byte) MapleBinaryCodes.BRANCH:
                 return new BranchInstruction<>(processor, address, opCode, rd, opt, a1);
-            case 0b00010000:
+            case (byte) MapleBinaryCodes.BRANCH_LINK:
                 return new BranchLinkInstruction<>(processor, address, opCode, rd, opt, a1);
-            case 0b00010001:
+            case (byte) MapleBinaryCodes.SHIFT:
                 return new BitwiseShiftInstruction<>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00010010:
+            case (byte) MapleBinaryCodes.AND_OR_XOR:
                 return new BitwiseBinaryInstruction<>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00010011:
+            case (byte) MapleBinaryCodes.LDR:
                 return new LoadToRegisterInstruction<>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00010100:
+            case (byte) MapleBinaryCodes.STR:
                 return new StoreFromRegisterInstruction<>(processor, address, opCode, rd, opt, a1, a2);
-            case 0b00010101:
+            case (byte) MapleBinaryCodes.POP_PUSH:
                 return new PopPushInstruction<>(processor, address, opCode, rd, opt);
-            case 0b00010110:
+            case (byte) MapleBinaryCodes.EXIT:
                 return new ExitInstruction<>(processor, address, opCode);
-            case 0b00010111:
+            case (byte) MapleBinaryCodes.IO_READ_WRITE:
                 return new IOInstruction<>(processor, address, opCode, rd, opt, a1, a2);
 
             default:
