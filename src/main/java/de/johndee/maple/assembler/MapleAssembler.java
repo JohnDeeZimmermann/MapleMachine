@@ -92,22 +92,20 @@ public class MapleAssembler implements Assembler<Long>{
         }
 
 
-        String command = "";
+        String instructionName = "";
         if (line.contains(" ")) {
-            command = line.substring(0, line.indexOf(" "));
+            instructionName = line.substring(0, line.indexOf(" "));
         } else {
-            command = line;
+            instructionName = line;
         }
 
 
-        if (!MapleBinaryCodes.codeMap.containsKey(command)) {
-            throw new AssemblyError(lineNumber, line, "Instruction " + command
+        if (!MapleBinaryCodes.codeMap.containsKey(instructionName)) {
+            throw new AssemblyError(lineNumber, line, "Instruction " + instructionName
                     + " not known. Please reference the manual for a list of instructions.");
         }
 
-
-
-        long opCode = MapleBinaryCodes.codeMap.get(command);
+        long opCode = MapleBinaryCodes.codeMap.get(instructionName);
 
         if (opCode == MapleBinaryCodes.MOV_MVN) {
             //return parseMoveInstruction(line, labelMap, lineNumber);
@@ -124,12 +122,29 @@ public class MapleAssembler implements Assembler<Long>{
                                          int lineNumber,
                                          long opCode) {
 
+        String instructionName = "";
+        String[] substrings = line.split(" ");
+        instructionName = substrings[0];
+        var args = substrings.length > 1 ? getArgs(instructionName, line) : new String[0];
 
+        if (args.length > 3) {
+            throw new AssemblyError(lineNumber, line, "Too many arguments for instruction.");
+        }
 
+        long options = MapleBinaryCodes.optionsMap.get(instructionName); // Options are 4 bits in size
+        long register = getDefaultInstructionArgsRepresentation(args[0], 0, lineNumber, line); // Registers are always the first argument and 4 bits in size
 
-        return 0;
+        long binaryInstruction = 0;
+        binaryInstruction |= opCode << (64 - 8); // Shift opcode to the correct position.
+        binaryInstruction |= options << (56 - 4); // Shift options to the correct position.
+        binaryInstruction |= register << (52 - 4); // Shift register to the correct position.
 
+        for (int i = 1; i < 3 && args.length > i; i++) {
+            var arg = getDefaultInstructionArgsRepresentation(args[i], i, lineNumber, line);
+            binaryInstruction |= arg << (48 - 24 * (i - 1));
+        }
 
+        return binaryInstruction;
     }
 
     private long getDefaultInstructionArgsRepresentation(String args, int index, int lineNumber, String line) {
