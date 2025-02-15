@@ -84,7 +84,7 @@ public class MapleAssembler implements Assembler<Long>{
         return map;
     }
 
-    private long parseLine(String line, Map<String, Integer> labelMap, int lineNumber) {
+    public long parseLine(String line, Map<String, Integer> labelMap, int lineNumber) {
 
         // Insert label name
         for (var labelName : labelMap.keySet()) {
@@ -131,7 +131,7 @@ public class MapleAssembler implements Assembler<Long>{
             throw new AssemblyError(lineNumber, line, "Too many arguments for instruction.");
         }
 
-        long options = MapleBinaryCodes.optionsMap.get(instructionName); // Options are 4 bits in size
+        long options = MapleBinaryCodes.optionsMap.getOrDefault(instructionName, 0L); // Options are 4 bits in size
         long register = getDefaultInstructionArgsRepresentation(args[0], 0, lineNumber, line); // Registers are always the first argument and 4 bits in size
 
         long binaryInstruction = 0;
@@ -141,13 +141,13 @@ public class MapleAssembler implements Assembler<Long>{
 
         for (int i = 1; i < 3 && args.length > i; i++) {
             var arg = getDefaultInstructionArgsRepresentation(args[i], i, lineNumber, line);
-            binaryInstruction |= arg << (48 - 24 * (i - 1));
+            binaryInstruction |= arg << (48 - 24 * (i));
         }
 
         return binaryInstruction;
     }
 
-    private long getDefaultInstructionArgsRepresentation(String args, int index, int lineNumber, String line) {
+    public long getDefaultInstructionArgsRepresentation(String args, int index, int lineNumber, String line) {
         args = args.trim();
 
         int valueLength;
@@ -204,6 +204,9 @@ public class MapleAssembler implements Assembler<Long>{
 
         if (numericValue >= (1L << (valueLength - 1)))
             throw new AssemblyError(lineNumber, line, "Value too large for " + (isRegister ? "register" : "number") + ": " + args);
+
+        if (index == 0)
+            return numericValue;
 
         return (numericValue << 1L) | (isRegister ? 1L : 0L);
     }
