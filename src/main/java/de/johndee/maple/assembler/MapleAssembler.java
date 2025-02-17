@@ -107,14 +107,12 @@ public class MapleAssembler implements Assembler<Long>{
 
         long opCode = MapleBinaryCodes.codeMap.get(instructionName);
 
-        if (opCode == MapleBinaryCodes.MOV_MVN) {
-            //return parseMoveInstruction(line, labelMap, lineNumber);
-        } else {
-            return parseDefaultInstruction(line, labelMap, lineNumber, opCode);
-        }
+        if (opCode == MapleBinaryCodes.NOP)
+            return 0L;
+        if (opCode == MapleBinaryCodes.MOV_MVN)
+            return parseMoveInstruction(line, labelMap, lineNumber, opCode);
 
-        return 0L; //NOP
-
+        return parseDefaultInstruction(line, labelMap, lineNumber, opCode);
     }
 
     private long parseDefaultInstruction(String line,
@@ -147,19 +145,67 @@ public class MapleAssembler implements Assembler<Long>{
         return binaryInstruction;
     }
 
+    private long parseMoveInstruction(String line,
+                                      Map<String, Integer> labelMap,
+                                      int lineNumber,
+                                      long opCode) {
+
+        String instructionName = "";
+        String[] substrings = line.split(" ");
+        instructionName = substrings[0];
+        var args = substrings.length > 1 ? getArgs(instructionName, line) : new String[0];
+
+        if (args.length != 2) {
+            throw new AssemblyError(lineNumber, line, "MOV/MVN instructions require exactly two arguments.");
+        }
+
+        long options = MapleBinaryCodes.optionsMap.getOrDefault(instructionName, 0L); // Options are 4 bits in size
+        long register = getMoveInstructionArgsRepresentation(args[0], 0, lineNumber, line); // Register is always the first argument and 4 bits in size
+
+        long binaryInstruction = 0;
+        binaryInstruction |= opCode << (64 - 8); // Shift opcode to the correct position.
+        binaryInstruction |= options << (56 - 1); // Shift options to the correct position.
+        binaryInstruction |= register << (55 - 4); // Shift register to the correct position.
+        binaryInstruction |= getMoveInstructionArgsRepresentation(args[1], 1, lineNumber, line);
+
+        return binaryInstruction;
+    }
+    
+
     public long getDefaultInstructionArgsRepresentation(String args, int index, int lineNumber, String line) {
         args = args.trim();
 
         int valueLength;
-        boolean isRegister;
-        long numericValue;
 
         valueLength = switch (index) {
             case 0 -> 4;
             default -> 24;
         };
 
+        return getNumericValue(args, index, lineNumber, line, valueLength);
+    }
 
+    public long getMoveInstructionArgsRepresentation(String args, int index, int lineNumber, String line) {
+        args = args.trim();
+
+        int valueLength;
+
+        if (index >= 2) {
+            throw new AssemblyError(lineNumber, line, "Too many arguments for MOV instruction.");
+        }
+
+        valueLength = switch (index) {
+            case 0 -> 4;
+            case 1 -> 51;
+            default -> 0;
+        };
+
+        return getNumericValue(args, index, lineNumber, line, valueLength);
+    }
+
+    private long getNumericValue(String args, int index, int lineNumber, String line, int valueLength) {
+        boolean isRegister;
+        long numericValue;
         if (args.startsWith("#")) {
             isRegister = false;
 
@@ -174,23 +220,18 @@ public class MapleAssembler implements Assembler<Long>{
                     throw new AssemblyError(lineNumber, line, "Invalid binary number: " + args);
 
                 numericValue = Long.parseLong(args.substring(2), 2);
-            }
-
-            else if (args.startsWith("0x")) {
+            } else if (args.startsWith("0x")) {
                 if (!NumberUtils.IsValidLong(args.substring(2), 16))
                     throw new AssemblyError(lineNumber, line, "Invalid hexadecimal number: " + args);
 
                 numericValue = Long.parseLong(args.substring(2), 16);
-            }
-
-            else {
+            } else {
                 if (!NumberUtils.IsValidLong(args))
                     throw new AssemblyError(lineNumber, line, "Invalid number: " + args);
 
                 numericValue = Long.parseLong(args);
             }
-        }
-        else {
+        } else {
             isRegister = true;
 
             String name = args.toUpperCase(Locale.US);
