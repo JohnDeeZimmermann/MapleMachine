@@ -170,7 +170,6 @@ public class MapleAssembler implements Assembler<Long>{
 
         return binaryInstruction;
     }
-    
 
     public long getDefaultInstructionArgsRepresentation(String args, int index, int lineNumber, String line) {
         args = args.trim();
