@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class MapleAssembler implements Assembler<Long>{
+public class MapleAssembler implements Assembler<Long> {
 
     public List<Long> assemblePreProcessedFile(Path path) throws IOException {
         File file = new File(path.toString());
@@ -39,10 +39,10 @@ public class MapleAssembler implements Assembler<Long>{
         var labelMap = createLabelMapChangeLines(lines);
         var instructions = new ArrayList<Long>(lines.size());
 
-        for (int i = 0; i<lines.size(); i++) {
+        for (int i = 0; i < lines.size(); i++) {
             var line = lines.get(i);
             try {
-                instructions.add(parseLine(line, labelMap, i+1));
+                instructions.add(parseLine(line, labelMap, i + 1));
             } catch (AssemblyError e) {
                 e.printStackTrace();
                 instructions.add(0L); //Errors will always be parsed as NOP
@@ -62,12 +62,13 @@ public class MapleAssembler implements Assembler<Long>{
 
         var map = new HashMap<String, Integer>();
 
-        for (int i = 0; i<lines.size(); i++) {
+        for (int i = 0; i < lines.size(); i++) {
             var line = lines.get(i);
             if (!line.startsWith(".")) {
                 continue;
             }
 
+            // This accounts for .DATA 100
             int end = 100;
             if (line.contains(" ")) {
                 end = line.indexOf(' ');
@@ -101,8 +102,7 @@ public class MapleAssembler implements Assembler<Long>{
 
 
         if (!MapleBinaryCodes.codeMap.containsKey(instructionName)) {
-            throw new AssemblyError(lineNumber, line, "Instruction " + instructionName
-                    + " not known. Please reference the manual for a list of instructions.");
+            return getNumericValue(instructionName, 1, lineNumber, line, 64) >> 1;
         }
 
         long opCode = MapleBinaryCodes.codeMap.get(instructionName);
@@ -241,9 +241,8 @@ public class MapleAssembler implements Assembler<Long>{
             numericValue = MapleBinaryCodes.registerMap.get(name);
         }
 
-
-        if (numericValue >= (1L << (valueLength - 1)))
-            throw new AssemblyError(lineNumber, line, "Value too large for " + (isRegister ? "register" : "number") + ": " + args);
+        if (valueLength != 64 && numericValue >= (1L << (valueLength - 1)))
+            throw new AssemblyError(lineNumber, line, "Value " + (isRegister ? "register" : "number") + ": " + args + " exceeds maximum possible length: " + valueLength + " bits.");
 
         if (index == 0)
             return numericValue;
@@ -254,7 +253,7 @@ public class MapleAssembler implements Assembler<Long>{
     private String[] getArgs(String instructionName, String line) {
         var args = line.substring(instructionName.length()).split(",");
 
-        for (int i = 0; i<args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             args[i] = args[i].trim();
         }
 

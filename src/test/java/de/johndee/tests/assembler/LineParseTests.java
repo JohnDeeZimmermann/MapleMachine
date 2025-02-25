@@ -21,6 +21,28 @@ public class LineParseTests {
         Assert.assertEquals(expected1, result1);
     }
 
+    @Test
+    public void parseNumber() {
+        var labelMap = new HashMap<String, Integer>();
+        MapleAssembler assembler = new MapleAssembler();
+
+        String instr1 = "#16";
+        String instr2 = "#0";
+        String instr3 = "#0b1000";
+
+        long expected1 = 16L;
+        long expected2 = 0L;
+        long expected3 = 8L;
+
+        long result1 = assembler.parseLine(instr1, labelMap, 0);
+        long result2 = assembler.parseLine(instr2, labelMap, 0);
+        long result3 = assembler.parseLine(instr3, labelMap, 0);
+
+        Assert.assertEquals(expected1, result1);
+        Assert.assertEquals(expected2, result2);
+        Assert.assertEquals(expected3, result3);
+    }
+
 
     @Test
     public void testMoveParseLine() {
