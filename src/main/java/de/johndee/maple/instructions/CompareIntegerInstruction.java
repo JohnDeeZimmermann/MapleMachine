@@ -18,10 +18,10 @@ public class CompareIntegerInstruction<Word extends Number> extends CompareInstr
         var proc = getProcessor();
         var ar = proc.getArithmeticWrapper();
 
-        Word arg1 = ar.getValueOrRegisterValue(getFirstArgument(), proc);
-        Word arg2 = ar.getValueOrRegisterValue(getSecondArgument(), proc);
-        Word result = ar.sub(arg1, arg2);
+        Word argReg = proc.getRegisterValue(ar.getRegisterID(getDestinationRegister()));
+        Word argCmp = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        Word result = ar.sub(argReg, argCmp);
 
-        ar.handleCompareRegisterOperationResult(arg1, arg2, result, proc);
+        ar.handleCompareRegisterOperationResult(argReg, argCmp, result, proc);
     }
 }

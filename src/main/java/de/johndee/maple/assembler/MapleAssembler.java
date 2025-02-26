@@ -31,7 +31,7 @@ public class MapleAssembler implements Assembler<Long> {
             throw new IOException("File is not a preprocessed maple assembly (.pmasm) file: " + path);
         }
 
-        var lines = Files.lines(path).toList();
+        var lines = new ArrayList<>(Files.lines(path).toList());
         var labelMap = createLabelMapChangeLines(lines);
         var instructions = new ArrayList<Long>(lines.size());
 
@@ -65,13 +65,13 @@ public class MapleAssembler implements Assembler<Long> {
             }
 
             // This accounts for .DATA 100
-            int end = 100;
+            int end = line.length();
             if (line.contains(" ")) {
                 end = line.indexOf(' ');
             }
 
             var label = line.substring(1, end);
-            map.put(label, i);
+            map.put(label, i + 1);
 
             var newLine = line.substring(end).trim();
 
@@ -85,7 +85,7 @@ public class MapleAssembler implements Assembler<Long> {
 
         // Insert label name
         for (var labelName : labelMap.keySet()) {
-            line = line.replace("@" + labelName, "PS, " + labelMap.get(labelName).toString());
+            line = line.replace("@" + labelName, "PS, #" + labelMap.get(labelName).toString());
         }
 
 
@@ -203,6 +203,9 @@ public class MapleAssembler implements Assembler<Long> {
     private long getNumericValue(String args, int index, int lineNumber, String line, int valueLength) {
         boolean isRegister;
         long numericValue;
+
+        if (line.isBlank()) return 0L;
+
         if (args.startsWith("#")) {
             isRegister = false;
 
@@ -239,8 +242,8 @@ public class MapleAssembler implements Assembler<Long> {
             numericValue = MapleBinaryCodes.registerMap.get(name);
         }
 
-        if (valueLength != 64 && numericValue >= (1L << (valueLength - 1)))
-            throw new AssemblyError(lineNumber, line, "Value " + (isRegister ? "register" : "number") + ": " + args + " exceeds maximum possible length: " + valueLength + " bits.");
+        if (valueLength != 64 && numericValue >= (1L << (valueLength)))
+            throw new AssemblyError(lineNumber, line, "Value " + (isRegister ? "register" : "number") + ": " + args + " (" + numericValue + ") exceeds maximum possible length: " + valueLength + " bits.");
 
         if (index == 0)
             return numericValue;

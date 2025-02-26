@@ -47,22 +47,17 @@ public abstract class ConditionalInstruction<Word extends Number> extends BaseIn
         var ar = getProcessor().getArithmeticWrapper();
         var cr = ar.getCRHandler(getProcessor());
 
-        switch (condition) {
-            case EQ:
-                return cr.getZero().intValue() == 1;
-            case NQ:
-                return cr.getZero().intValue() == 0;
-            case LT:
-                return cr.getNegative().intValue() == 1;
-            case LE:
-                return cr.getNegative().intValue() == 1 || cr.getZero().intValue() == 1;
-            case GT:
-                return cr.getNegative().intValue() == 0 && cr.getZero().intValue() == 0;
-            case GE:
-                return cr.getNegative().intValue() == 0;
-            default:
-                throw new UnsupportedOperationException("Condition not supported: " + condition);
-        }
+        int zero = cr.getZero().intValue();
+
+        return switch (condition) {
+            case EQ -> cr.getZero().intValue() == 1;
+            case NQ -> cr.getZero().intValue() == 0;
+            case LT -> cr.getNegative().intValue() == 1;
+            case LE -> cr.getNegative().intValue() == 1 || cr.getZero().intValue() == 1;
+            case GT -> cr.getNegative().intValue() == 0 && cr.getZero().intValue() == 0;
+            case GE -> cr.getNegative().intValue() == 0;
+            default -> throw new UnsupportedOperationException("Condition not supported: " + condition);
+        };
 
     }
 

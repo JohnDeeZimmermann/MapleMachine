@@ -12,8 +12,8 @@ public abstract class CompareInstruction<Word extends Number> extends BaseInstru
                               Word rargs2) {
         super(processor, address, OPCode, rdest, option, rargs1, rargs2);
 
-        if (processor.getArithmeticWrapper().nq(rdest, (byte) 0)) {
-            throw new IllegalArgumentException("rdest must be 0 (To indicate that it is ignored)");
+        if (processor.getArithmeticWrapper().nq(rargs2, (byte) 0)) {
+            throw new IllegalArgumentException("The second argument cannot be used");
         }
 
     }

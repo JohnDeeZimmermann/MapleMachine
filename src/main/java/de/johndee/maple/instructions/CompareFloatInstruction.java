@@ -19,11 +19,12 @@ public class CompareFloatInstruction<Word extends Number> extends CompareInstruc
         var proc = getProcessor();
         var ar = proc.getArithmeticWrapper();
 
-        Word arg1 = ar.getValueOrRegisterValue(getFirstArgument(), proc);
-        float arg1f = ar.reinterpretAsFloat(arg1);
-        Word arg2 = ar.getValueOrRegisterValue(getSecondArgument(), proc);
-        float arg2f = ar.reinterpretAsFloat(arg2);
-        float result = arg1f - arg2f;
-        ar.handleCompareRegisterOperationResult(arg1f, arg2f, result, proc);
+        Word argReg = proc.getRegisterValue(ar.getRegisterID(getDestinationRegister()));
+        float argRegF = ar.reinterpretAsFloat(argReg);
+        Word argCmp = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        float argCmpF = ar.reinterpretAsFloat(argCmp);
+
+        float result = argRegF - argCmpF;
+        ar.handleCompareRegisterOperationResult(argRegF, argCmpF, result, proc);
     }
 }

@@ -142,12 +142,11 @@ public class Maple64 implements Processor<Long> {
     @Override
     public Long step() {
         try {
-            var pc = getProgramCounter();
-            var raw = memory.read(pc, -1L);
-            var instruction = MapleInstructionParser.fromBinaryFormat(this, raw, pc);
+            var raw = memory.read(getProgramCounter(), -1L);
+            var instruction = MapleInstructionParser.fromBinaryFormat(this, raw, getProgramCounter());
             instruction.execute();
 
-            setProgramCounter(pc + 1);
+            setProgramCounter(getProgramCounter() + 1);
 
         } catch (IllegalMemoryAccessException e) {
             System.err.println("Illegal memory access at " + getProgramCounter());
