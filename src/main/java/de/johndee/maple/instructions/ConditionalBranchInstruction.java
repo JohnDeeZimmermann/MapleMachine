@@ -9,8 +9,19 @@ public class ConditionalBranchInstruction<Word extends Number> extends Condition
 
     @Override
     public void execute() {
-        //TODO : Not Implemented
 
-        throw new UnsupportedOperationException("Conditional Branch Instruction not implemented");
+        var proc = getProcessor();
+        var ar = proc.getArithmeticWrapper();
+
+        if (!this.checkCondition()) return;
+
+        Word offset = ar.getValueOrRegisterValue(getFirstArgument(), proc);
+        Word rdest = getDestinationRegister(); //The register that holds the address to jump to
+
+        Word value = proc.getRegisterValue(rdest.intValue());
+
+        Word pc = ar.add(value, offset);
+        pc = ar.sub(pc, (byte) 1); // -1 as the PC is going to increase by 1 after this instruction
+        proc.setProgramCounter(pc);
     }
 }
