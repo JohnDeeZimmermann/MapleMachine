@@ -16,23 +16,19 @@ public class MapleAssembler implements Assembler<Long> {
         File file = new File(path.toString());
 
         if (!file.exists()) {
-            System.err.println("File does not exist: " + path);
-            return List.of();
+            throw new IOException("File does not exist: " + path);
         }
 
         if (!file.isFile()) {
-            System.err.println("Path is not a file: " + path);
-            return List.of();
+            throw new IOException("Path is not a file: " + path);
         }
 
         if (!file.canRead()) {
-            System.err.println("Cannot read file: " + path);
-            return List.of();
+            throw new IOException("Cannot read file: " + path);
         }
 
-        if (!file.getName().endsWith(".masm")) {
-            System.err.println("File is not a preprocessed maple assembly (.pmasm) file: " + path);
-            return List.of();
+        if (!file.getName().endsWith(".pmasm")) {
+            throw new IOException("File is not a preprocessed maple assembly (.pmasm) file: " + path);
         }
 
         var lines = Files.lines(path).toList();
@@ -50,7 +46,7 @@ public class MapleAssembler implements Assembler<Long> {
 
         }
 
-        return null;
+        return instructions;
     }
 
     @Override
@@ -130,7 +126,9 @@ public class MapleAssembler implements Assembler<Long> {
         }
 
         long options = MapleBinaryCodes.optionsMap.getOrDefault(instructionName, 0L); // Options are 4 bits in size
-        long register = getDefaultInstructionArgsRepresentation(args[0], 0, lineNumber, line); // Registers are always the first argument and 4 bits in size
+        long register = args.length >= 1
+                ? getDefaultInstructionArgsRepresentation(args[0], 0, lineNumber, line)
+                : 0; // Registers are always the first argument and 4 bits in size
 
         long binaryInstruction = 0;
         binaryInstruction |= opCode << (64 - 8); // Shift opcode to the correct position.

@@ -225,7 +225,7 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
         crHandler.setZero(result == 0 ? 1L : 0L);
 
         long c = a * b;
-        crHandler.setOverflow(c / b == a ? 0L : 1L);
+        crHandler.setOverflow(b != 0 && c / b == a ? 0L : 1L);
         // TODO: NOT IMPLEMENTED crHandler.setParity();
     }
 
@@ -255,8 +255,7 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
      */
     @Override
     public Long binaryInstructionFormat(Instruction<Long> instruction) {
-        if (instruction instanceof BaseInstruction<Long>) {
-            BaseInstruction<Long> baseInstruction = (BaseInstruction<Long>) instruction;
+        if (instruction instanceof BaseInstruction<Long> baseInstruction) {
             Long opcode = baseInstruction.getOPCode();
             Long rdest = baseInstruction.getDestinationRegister();
             Long option = baseInstruction.getOption();
@@ -271,8 +270,7 @@ public class ArithmeticWrapper64 implements ArithmeticWrapper<Long> {
                 result = result | (rargs2);
 
             return result;
-        } else if (instruction instanceof MoveInstruction<Long>) {
-            MoveInstruction<Long> moveInstruction = (MoveInstruction<Long>) instruction;
+        } else if (instruction instanceof MoveInstruction<Long> moveInstruction) {
             Long opcode = moveInstruction.getOPCode();
             Long rdest = moveInstruction.getDestinationRegister();
             Long option = moveInstruction.getOptions();
