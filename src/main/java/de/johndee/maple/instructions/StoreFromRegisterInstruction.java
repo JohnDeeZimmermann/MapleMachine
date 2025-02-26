@@ -32,7 +32,7 @@ public class StoreFromRegisterInstruction<Word extends Number> extends BaseInstr
         var targetAddress = ar.getValueOrRegisterValue(getFirstArgument(), proc);
         var offset = ar.getValueOrRegisterValue(getSecondArgument(), proc);
 
-        targetAddress = ar.add(targetAddress, offset);
+        targetAddress = ar.add(targetAddress, ar.sub(offset, (byte) 1));
 
         Word value = proc.getRegisterValue(source);
 

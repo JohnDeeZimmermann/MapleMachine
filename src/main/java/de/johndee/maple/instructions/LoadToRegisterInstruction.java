@@ -31,7 +31,7 @@ public class LoadToRegisterInstruction<Word extends Number> extends BaseInstruct
         var address = ar.getValueOrRegisterValue(getFirstArgument(), proc);
         var offset = ar.getValueOrRegisterValue(getSecondArgument(), proc);
 
-        address = ar.add(address, offset);
+        address = ar.add(address, ar.sub(offset, (byte) 1));
 
         try {
             var result = mem.read(address, getAddress());
