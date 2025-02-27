@@ -1,0 +1,4 @@
+$: file de.johndee.Test
+$: include /test/resources/
+$: export FOO
+
