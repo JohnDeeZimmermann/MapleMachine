@@ -94,32 +94,33 @@ public class MapleBinaryCodes {
         optionsMap.put("MOV", 0L);
         optionsMap.put("MVN", 1L);
 
+        // Shifting everything below by one to allow for future extensions
         optionsMap.put("BEQ", 0L);
-        optionsMap.put("BNQ", 1L);
-        optionsMap.put("BLT", 2L);
-        optionsMap.put("BLE", 3L);
-        optionsMap.put("BGT", 4L);
-        optionsMap.put("BGE", 5L);
+        optionsMap.put("BNQ", 1L << 1);
+        optionsMap.put("BLT", 2L << 1);
+        optionsMap.put("BLE", 3L << 1);
+        optionsMap.put("BGT", 4L << 1);
+        optionsMap.put("BGE", 5L << 1);
 
-        optionsMap.put("RGE", 0L);
-        optionsMap.put("RLE", 1L);
-        optionsMap.put("RGT", 2L);
-        optionsMap.put("RLT", 3L);
-        optionsMap.put("REQ", 4L);
-        optionsMap.put("RNQ", 5L);
+        optionsMap.put("REQ", 0L);
+        optionsMap.put("RNQ", 1L << 1);
+        optionsMap.put("RLT", 2L << 1);
+        optionsMap.put("RLE", 3L << 1);
+        optionsMap.put("RGT", 4L << 1);
+        optionsMap.put("RGE", 5L << 1);
 
         optionsMap.put("SEQ", 0L);
-        optionsMap.put("SNQ", 1L);
-        optionsMap.put("SLE", 2L);
-        optionsMap.put("SGE", 3L);
-        optionsMap.put("SGT", 4L);
-        optionsMap.put("SLT", 5L);
+        optionsMap.put("SNQ", 1L << 1);
+        optionsMap.put("SLE", 2L << 1);
+        optionsMap.put("SGE", 3L << 1);
+        optionsMap.put("SGT", 4L << 1);
+        optionsMap.put("SLT", 5L << 1);
 
         optionsMap.put("POP", 0L);
         optionsMap.put("PUSH", 1L);
 
         optionsMap.put("AND", 0L);
-        optionsMap.put("OR", 1L);
+        optionsMap.put("ORR", 1L);
         optionsMap.put("XOR", 2L);
     }
 

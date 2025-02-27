@@ -47,8 +47,6 @@ public abstract class ConditionalInstruction<Word extends Number> extends BaseIn
         var ar = getProcessor().getArithmeticWrapper();
         var cr = ar.getCRHandler(getProcessor());
 
-        int zero = cr.getZero().intValue();
-
         return switch (condition) {
             case EQ -> cr.getZero().intValue() == 1;
             case NQ -> cr.getZero().intValue() == 0;

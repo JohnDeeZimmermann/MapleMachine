@@ -82,12 +82,7 @@ public class MapleAssembler implements Assembler<Long> {
     }
 
     public long parseLine(String line, Map<String, Integer> labelMap, int lineNumber) {
-
-        // Insert label name
-        for (var labelName : labelMap.keySet()) {
-            line = line.replace("@" + labelName, "PS, #" + labelMap.get(labelName).toString());
-        }
-
+        line = insertLabelNamesIntoLine(line, lineNumber, labelMap);
 
         String instructionName = "";
         if (line.contains(" ")) {
@@ -95,7 +90,6 @@ public class MapleAssembler implements Assembler<Long> {
         } else {
             instructionName = line;
         }
-
 
         if (!MapleBinaryCodes.codeMap.containsKey(instructionName)) {
             return getNumericValue(instructionName, 1, lineNumber, line, 64) >> 1;
@@ -261,4 +255,20 @@ public class MapleAssembler implements Assembler<Long> {
         return args;
     }
 
+    private String insertLabelNamesIntoLine(String line, int lineNumber, Map<String, Integer> labelMap) {
+        String result = line;
+
+        for (Map.Entry<String, Integer> entry : labelMap.entrySet()) {
+            String labelName = entry.getKey();
+            String labelValue = "PS, #" + entry.getValue().toString();
+
+            String escapedLabelName = labelName.replaceAll("[\\[\\]{}()*+?.^$|]", "\\\\$0");
+
+            String pattern = "@" + escapedLabelName + "\\b";
+
+            result = result.replaceAll(pattern, labelValue);
+        }
+
+        return result;
+    }
 }
