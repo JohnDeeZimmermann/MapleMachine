@@ -122,6 +122,9 @@ public class MapleBinaryCodes {
         optionsMap.put("AND", 0L);
         optionsMap.put("ORR", 1L);
         optionsMap.put("XOR", 2L);
+
+        optionsMap.put("LSL", 0L);
+        optionsMap.put("LSR", 1L);
     }
 
     public static Map<String, Long> registerMap = new HashMap<>();

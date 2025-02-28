@@ -83,6 +83,7 @@ public class MapleAssembler implements Assembler<Long> {
 
     public long parseLine(String line, Map<String, Integer> labelMap, int lineNumber) {
         line = insertLabelNamesIntoLine(line, lineNumber, labelMap);
+        line = replaceStringInLine(line, lineNumber);
 
         String instructionName = "";
         if (line.contains(" ")) {
@@ -270,5 +271,70 @@ public class MapleAssembler implements Assembler<Long> {
         }
 
         return result;
+    }
+
+    private String replaceStringInLine(String line, int lineNumber) {
+        StringBuilder result = new StringBuilder();
+        int currentPos = 0;
+
+        while (currentPos < line.length()) {
+            int quoteStart = line.indexOf("\"", currentPos);
+            if (quoteStart == -1) {
+                // No more strings found, append the rest of the line
+                result.append(line.substring(currentPos));
+                break;
+            }
+
+            // Check if this quote is escaped
+            if (quoteStart > 0 && line.charAt(quoteStart - 1) == '\\') {
+                // This is an escaped quote, append everything up to and including it and continue
+                result.append(line, currentPos, quoteStart + 1);
+                currentPos = quoteStart + 1;
+                continue;
+            }
+
+            // Append everything before the quote
+            result.append(line, currentPos, quoteStart);
+
+            // Find the closing quote, taking into account escaped quotes
+            int quoteEnd = quoteStart + 1;
+            while (true) {
+                quoteEnd = line.indexOf("\"", quoteEnd);
+                if (quoteEnd == -1) {
+                    throw new AssemblyError(lineNumber, line, "Unclosed string literal");
+                }
+                // Check if this quote is escaped
+                if (quoteEnd > 0 && line.charAt(quoteEnd - 1) == '\\') {
+                    quoteEnd++; // Skip this quote and continue searching
+                    continue;
+                }
+                break; // Found unescaped closing quote
+            }
+
+            // Extract the string content and unescape any escaped quotes
+            String stringContent = line.substring(quoteStart + 1, quoteEnd).replace("\\\"", "\"");
+            if (stringContent.length() > 8) {
+                throw new AssemblyError(lineNumber, line, "String literal exceeds maximum length of 8 characters");
+            }
+
+            // Convert to hex representation
+            StringBuilder hexValue = new StringBuilder("#0x");
+
+            // Fill with zeros for remaining bytes (each byte is 2 hex digits)
+            for (int i = stringContent.length(); i < 8; i++) {
+                hexValue.append("00");
+            }
+
+            // Add ASCII values in reverse order
+            for (int i = stringContent.length() - 1; i >= 0; i--) {
+                String hexByte = String.format("%02X", (int) stringContent.charAt(i));
+                hexValue.append(hexByte);
+            }
+
+            result.append(hexValue);
+            currentPos = quoteEnd + 1;
+        }
+
+        return result.toString();
     }
 }

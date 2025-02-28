@@ -1,0 +1,5 @@
+LDR R0, @TEST
+SUBI R0, R0, #65
+EXIT
+
+.TEST "A"
