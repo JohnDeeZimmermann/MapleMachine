@@ -1,77 +1,88 @@
 # Maple Machine
-Die **Maple Machine** (*MapMac*) ist eine virtuelle Maschine zu bildenden Zwecken. Das Ziel besteht darin, mehr über CPUs zu lernen und es möglich zu machen, mit I/O zu interagieren und eine einfache Grafikeinheit zu bedienen. Langfristig soll die Entwicklung eines Betriebssystems ermöglicht werden.
-Sie ist sehr nah an die ARM-Assembly Sprachen angelehnt. Es handelt sich hierbei um eine Von-Neumann-Maschine.
 
-**Dieses Projekt soll enthalten:**
-- Einen Compiler (Assembly → Objekt-Dateien)
+The **Maple Machine** (*MapMac*) is a virtual machine for educational purposes. The goal is to learn more about CPUs and
+to enable interaction with I/O and the operation of a simple graphics unit. In the long term, the development of an
+operating system should be enabled.
+It is closely aligned with ARM assembly languages. This is a Von-Neumann machine.
+
+**This project should include:**
+
+- A compiler (Assembly → Object files)
 - Linker
 - Assembler
 - Interpreter
 
+## Memory
 
-## Speicher
-Der Speicher beinhaltet 64-Bit Werte. In diesem befinden sich sowohl Programmcode, wie auch Datenwerte. Der *Stack* schrumpft dabei.
+The memory contains 64-bit values. This includes both program code and data values. The *Stack* shrinks in this context.
 ##### Controlled Access Region (CAR)
-Der Speicherzugriff kann über sogenannte CARs beschränkt werden.
 
-Dabei kann ein Befehl innerhalb eines CARs nur auf den Speicher innerhalb des CARs oder des Stacks zugreifen. Eine CAR kann nur außerhalb eines CARs definiert oder gelöscht werden.
-Folgende Befehle können dazu verwendet werden:
+Memory access can be restricted through so-called CARs.
 
-| Name                    | Befehl               | Zweck                                                                                     | OpCode      |
-| ----------------------- | -------------------- | ----------------------------------------------------------------------------------------- | ----------- |
-| CAR Define              | `CARD ID START, END` | Definiert eine Region im Speicher mit einer ID                                            | `1000 0000` |
-| CAR Remove              | `CARR ID`            | Entfernt eine Region mit gegebener ID                                                     | `1000 0001` |
-| CAR Stack Region Define | `CASD START END`     | Definiert den Stack und dessen Größe. Der Stack Pointer wird nicht automatisch verändert. | `1000 0010` |
+A command within a CAR can only access memory within the CAR or the Stack. A CAR can only be defined or removed outside
+of a CAR.
+The following commands can be used for this:
 
-## Register
-Wir haben mehrere General-Purpose Register `r0` bis `r9`. Diese können für alles mögliche verwendet werden. `r0` ist dabei standardmäßig unser Rückgaberegister.
+| Name                    | Command              | Purpose                                                                         | OpCode      |
+|-------------------------|----------------------|---------------------------------------------------------------------------------|-------------|
+| CAR Define              | `CARD ID START, END` | Defines a region in memory with an ID                                           | `1000 0000` |
+| CAR Remove              | `CARR ID`            | Removes a region with a given ID                                                | `1000 0001` |
+| CAR Stack Region Define | `CASD START END`     | Defines the Stack and its size. The Stack Pointer is not automatically changed. | `1000 0010` |
 
-| Register      | Definition                                                                                                         | Numerischer Wert  |
-|---------------| ------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `r0`          | Return Register                                                                                                    | `0000`            |
-| `r1` bis `r5` | General-Purpose Register                                                                                           | `0001` bis `0101` |
-| `sp`          | Stack Pointer                                                                                                      | `0110`            |
-| `pc`          | Programmzähler                                                                                                     | `0111`            |
-| `dl`          | Dynamic Link - Dieser zeigt auf eine Instruktion (Meist zum Rücksprung genutzt)                                    | `1000`            |
-| `cr`/`mr`     | Compare oder Math Result: Dieser Register beinhaltet die Flags, die bei mathematischen Operationen gesetzt werden. | `1001`            |
-| `iop`         | IOPointer: Zeigt auf ein IO-Device, mit welchem kommuniziert werden soll                                           | `1010`            |
-| `ps`          | Program Start  - Zeigt auf das Anfang des Programms. Dient dem dynamischen Laden von Programmen                    | `1011`            |
-| `pl`          | Program Length - Die Länge in Wörtern, die für das Programm vorgesehen sind.                                       | `1100`            |
-| `fp`          | Frame Pointer - Zeigt auf den Anfang des verwendbaren Speicherbereichs.                                            | `1001`            |
-| `h0` bis `h1` | Hardware Register - Diese Register sind für bestimmte Hardware-Funktionen reserviert.                              | `1110` bis `1111` |
+## Registers
 
-## Instruktionen
-| Name                                | Verwendung                                                                    | Beschreibung                                                                                                                                                                            | OpCode      |
-|-------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| NOP                                 | `NOP`                                                                         | Überspringt die Zeile.                                                                                                                                                                  | `0000 0000` |
-| Move / Move Not                     | `MOV rdest src` / `MVN rdest src`                                             | Kopiert den Wert von `src` nach `rdest`, wobei `rdest` ein Register sein muss. Bei Move Not wird zusätzlich ein NOT ausgeführt.                                                         | `0000 0001` |
-| Add Integer                         | `ADDI rdest, a, b`                                                            | Addiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`                                                                           | `0000 0010` |
-| Subtract Integer                    | `SUBI rdest, a, b`                                                            | Subtrahiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`                                                                       | `0000 0011` |
-| Multiply Integer                    | `MULI rdest, a, b`                                                            | Multipliziert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`                                                                     | `0000 0100` |
-| Divide Integer                      | `DIVI rdest, a, b`                                                            | Dividiert die Integer Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`.                                                                        | `0000 0101` |
-| Add Float                           | `ADDF rdest, ra, rb`                                                          | Addiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`                                                                             | `0000 0110` |
-| Subtract Float                      | `SUBF rdest, ra, rb`                                                          | Subtrahiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`                                                                         | `0000 0111` |
-| Multiply Float                      | `MULF rdest, ra, rb`                                                          | Multipliziert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`                                                                       | `0000 1000` |
-| Divide Float                        | `DIVF rdest, ra, rb`                                                          | Dividiert die Float Werte in `regDest` und `reg1`, bzw. in `reg1` und `reg2` und Speichert diese in `regDest`.                                                                          | `0000 1001` |
-| Conditional Skip                    | `SGE` / `SEQ` / ...                                                           | Überspringt die nächste Instruktion, sollte der Wert `true` sein.                                                                                                                       | `0000 1010` |
-| Compare Int                         | `CMPI a b`                                                                    | Vergleicht die Integer Werte der Register `a`und `b`. Setzt den `cr`-Register entsprechend des Vergleichs                                                                               | `0000 1011` |
-| Compare Float                       | `CMPF reg1 reg2`                                                              | Vergleicht die Float Werte der Register `reg1`und `reg2`. Setzt den `cr`-Register entsprechend des Vergleichs                                                                           | `0000 1100` |
-| Compare Results                     | `rge reg1`, `rle reg1`, `req reg1`, `rnq reg1`, `rgt reg1`, `rlt reg1`        | Betrachtet den in `cr` abgelegten Vergleich und legt den Wert `true` (= 1), bzw. `false` (= 0) in Register `reg1` ab.                                                                   | `0000 1101` |
-| Conditional Branch                  | `bge reg+o`, `ble reg+o`, `beg reg+o`, `bnq reg+o`, `bgt reg+o`, `blt reg+o`  | Führt basierend auf dem `cr` Register einen Sprung aus, zu einer Adresse + Offset                                                                                                       | `0000 1110` |
-| Branch                              | `b reg, offset`                                                               | Führt einen Sprung aus                                                                                                                                                                  | `0000 1111` |
-| Branch and Link                     | `bl reg, offset`                                                              | Führt einen Sprung aus und setzt den `dl` Register auf die nach dem Befehl folgende Adresse.                                                                                            | `0001 0000` |
-| Logic Shift Left, Logic Shift Right | `lsl rdest rsource shift`                                                     | Führt einen logischen Shift aus.                                                                                                                                                        | `0001 0001` |
-| And, Or, Xor                        | `AND/ORR/XOR rdest ra rb`                                                     | Führt den entsprechenden Befehl aus und speichert diesen in `rdest`.                                                                                                                    | `0001 0010` |
-| Load to Register                    | `LDR reg, raddress, offset`                                                   | Lädt den im Speicher befindlichen Wert in das Register.                                                                                                                                 | `0001 0011` |
-| Store to Memory from Register       | `STR reg, raddress, offset`                                                   | Speichert den im Register befindlichen Wert in den Speicher                                                                                                                             | `0001 0100` |
-| Pop / Push                          | `POP reg` / `PUSH reg`                                                        | Pushes the value stored in `reg` to the stack / Pops the value on the stack and stores it to `reg`                                                                                      | `0001 0101` |      
-| Exit                                | `EXIT`                                                                        | Powers off the processor. Not possible within a CAR                                                                                                                                     | `0001 0110` |
-| IO Read / Write                     | `IOR rdevice_dest host_source length` / `IOW rhost_dest device_source length` | Writes or read to an IO-Device at a certain location from a certain location for length words. For certain IO-Devices, such as storage devices, this is not possbile from within a CAR. | `0001 0111` |
-Other instructions in the future:`SWI`
+We have several general-purpose registers `r0` to `r9`. These can be used for anything. `r0` is the default return
+register.
 
-## Things to keep in mind 
+| Register     | Definition                                                                                 | Numerical Value  |
+|--------------|--------------------------------------------------------------------------------------------|------------------|
+| `r0`         | Return Register                                                                            | `0000`           |
+| `r1` to `r5` | General-Purpose Register                                                                   | `0001` to `0101` |
+| `sp`         | Stack Pointer                                                                              | `0110`           |
+| `pc`         | Program Counter                                                                            | `0111`           |
+| `dl`         | Dynamic Link - This points to an instruction (usually used for return)                     | `1000`           |
+| `cr`/`mr`    | Compare or Math Result: This register holds the flags set by comparison or math operations | `1001`           |
+| `iop`        | IOPointer: Points to an IO device to communicate with                                      | `1010`           |
+| `ps`         | Program Start - Points to the beginning of the program. Used for dynamic program loading   | `1011`           |
+| `pl`         | Program Length - The length in words allocated for the program.                            | `1100`           |
+| `fp`         | Frame Pointer - Points to the beginning of the usable memory area.                         | `1001`           |
+| `h0` to `h1` | Hardware Register - These registers are reserved for specific hardware functions.          | `1110` to `1111` |
+
+## Instructions
+
+| Name                                    | Usage                                                                         | Description                                                                                                                                                                             | OpCode      |
+|-----------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| NOP                                     | `NOP`                                                                         | Skips the current line.                                                                                                                                                                 | `0000 0000` |
+| Move / Move Not                         | `MOV rdest src` / `MVN rdest src`                                             | Copies the value from `src` to `rdest`, where `rdest` must be a register. For Move Not, a NOT operation is additionally performed.                                                      | `0000 0001` |
+| Add Integer                             | `ADDI rdest, a, b`                                                            | Adds the integer values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`                                                                            | `0000 0010` |
+| Subtract Integer                        | `SUBI rdest, a, b`                                                            | Subtracts the integer values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`                                                                       | `0000 0011` |
+| Multiply Integer                        | `MULI rdest, a, b`                                                            | Multiplies the integer values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`                                                                      | `0000 0100` |
+| Divide Integer                          | `DIVI rdest, a, b`                                                            | Divides the integer values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`.                                                                        | `0000 0101` |
+| Add Float                               | `ADDF rdest, ra, rb`                                                          | Adds the float values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`                                                                              | `0000 0110` |
+| Subtract Float                          | `SUBF rdest, ra, rb`                                                          | Subtracts the float values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`                                                                         | `0000 0111` |
+| Multiply Float                          | `MULF rdest, ra, rb`                                                          | Multiplies the float values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`                                                                        | `0000 1000` |
+| Divide Float                            | `DIVF rdest, ra, rb`                                                          | Divides the float values in `regDest` and `reg1`, or in `reg1` and `reg2`, and stores the result in `regDest`.                                                                          | `0000 1001` |
+| Conditional Skip                        | `SGE` / `SEQ` / ...                                                           | Skips the next instruction if the value is `true`.                                                                                                                                      | `0000 1010` |
+| Compare Int                             | `CMPI a b`                                                                    | Compares the integer values of registers `a` and `b`. Sets the `cr` register according to the comparison.                                                                               | `0000 1011` |
+| Compare Float                           | `CMPF reg1 reg2`                                                              | Compares the float values of registers `reg1` and `reg2`. Sets the `cr` register according to the comparison.                                                                           | `0000 1100` |
+| Compare Results                         | `rge reg1`, `rle reg1`, `req reg1`, `rnq reg1`, `rgt reg1`, `rlt reg1`        | Evaluates the comparison stored in `cr` and sets the value `true` (= 1), or `false` (= 0) in register `reg1`.                                                                           | `0000 1101` |
+| Conditional Branch                      | `bge reg+o`, `ble reg+o`, `beg reg+o`, `bnq reg+o`, `bgt reg+o`, `blt reg+o`  | Performs a jump based on the `cr` register to an address + Offset                                                                                                                       | `0000 1110` |
+| Branch                                  | `b reg, offset`                                                               | Performs a jump                                                                                                                                                                         | `0000 1111` |
+| Branch and Link                         | `bl reg, offset`                                                              | Performs a jump and sets the `dl` register to the address following the command.                                                                                                        | `0001 0000` |
+| Logical Shift Left, Logical Shift Right | `lsl rdest rsource shift`                                                     | Performs a logical shift.                                                                                                                                                               | `0001 0001` |
+| And, Or, Xor                            | `AND/ORR/XOR rdest ra rb`                                                     | Performs the corresponding operation and stores the result in `rdest`.                                                                                                                  | `0001 0010` |
+| Load to Register                        | `LDR reg, raddress, offset`                                                   | Loads the value from memory into the register.                                                                                                                                          | `0001 0011` |
+| Store to Memory from Register           | `STR reg, raddress, offset`                                                   | Stores the value from the register into memory.                                                                                                                                         | `0001 0100` |
+| Pop / Push                              | `POP reg` / `PUSH reg`                                                        | Pushes the value stored in `reg` to the stack / Pops the value from the stack and stores it in `reg`                                                                                    | `0001 0101` |
+| Exit                                    | `EXIT`                                                                        | Powers off the processor. Not possible within a CAR.                                                                                                                                    | `0001 0110` |
+| IO Read / Write                         | `IOR rdevice_dest host_source length` / `IOW rhost_dest device_source length` | Writes or reads to an IO device at a certain location from a certain location for a certain length. For certain IO devices, such as storage devices, this is not possible within a CAR. | `0001 0111` |
+
+Other instructions in the future: `SWI`
+
+## Things to keep in mind
 #### Floats
-When doing float operations, the values have to first be moved into registers.
-The float operators do not support direct inputs for values but must instead rely on the register values.
 
-This is due to a limitation with floats, specifically that they need to fit into 32-bit. 
+When performing float operations, the values must first be moved into registers.
+The float operators do not support direct value inputs but must instead rely on the register values.
+
+This is due to a limitation with floats, specifically that they need to fit into 32-bit.
