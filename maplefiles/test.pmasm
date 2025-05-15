@@ -1,1 +1,6 @@
-ADDI R0, #10, #20
+LDR R0, @TEST
+LSR R0, R0, #8
+SUBI R0, R0, #65
+EXIT
+
+.TEST "BA"

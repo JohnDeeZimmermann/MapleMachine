@@ -32,7 +32,7 @@ public class MapleDataFileHandler {
             long entry = 0L;
 
             for (int j = 0; j<8; j++) {
-                entry = entry | (data[i * 8 + j] << 8);
+                entry = entry | ((long) bytes[i * 8 + j] << (8 * j));
             }
 
             data[i] = entry;
@@ -79,16 +79,26 @@ public class MapleDataFileHandler {
     }
 
     public static void writeMapleFile(Path path, Long[] data) throws IOException {
+
         byte[] bytes = new byte[data.length * 8];
 
-        for (int i = 0; i<data.length; i++) {
-            long value = data[i];
-            for (int j = 0; j<8; j++) {
-                bytes[i * 8 + j] = (byte) (value >> (8 * j));
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < 8; j++) {
+                bytes[i * 8 + j] = (byte) ((data[i] >> (8 * j)) & 0xFF);
             }
         }
 
         Files.write(path, bytes);
+    }
+
+    public static void writeMapleTextFile(Path path, Long[] data) throws IOException {
+        try (var writer = Files.newBufferedWriter(path)) {
+            for (var binary : data) {
+                String binaryString = String.format("%64s", Long.toBinaryString(binary)).replace(' ', '0');
+                writer.write(binaryString);
+                writer.newLine();
+            }
+        }
     }
 
 }

@@ -12,6 +12,58 @@ import java.util.*;
 
 public class MapleAssembler implements Assembler<Long> {
 
+    @Override
+    public List<Long> assembleFile(Path path) throws IOException {
+        var contents = preprocessFile(path);
+
+        var newPath = Path.of(path.toString().replace(".masm", ".pmasm"));
+        // Write file to disk
+        Files.write(newPath, contents);
+
+        return assemblePreProcessedFile(newPath);
+    }
+
+    @Override
+    public List<String> preprocessFile(Path path) throws IOException {
+        return loadAssemblyFile(path, "", 0);
+    }
+
+    private List<String> loadAssemblyFile(Path path, String parentLine, int lineNumber) throws IOException {
+        File file = new File(path.toString());
+        if (!file.exists()) {
+            throw new AssemblyError(lineNumber, parentLine, "File does not exist: " + path);
+        }
+
+        var preAppendList = new ArrayList<List<String>>();
+
+        var lines = new ArrayList<>(Files.readAllLines(path));
+
+        for (int i = 1; i < lines.size() + 1; i++) {
+            var line = lines.get(i - 1);
+            if (line.strip().startsWith("include")) {
+                if (line.length() < 8)
+                    throw new AssemblyError(i, line, "Missing path after include");
+                var pathToInclude = line.substring(7).trim();
+                preAppendList.add(loadAssemblyFile(path.getParent().resolve(pathToInclude), line, i));
+            }
+        }
+
+        // Now trimming all lines
+        var result = lines.stream()
+                .map(String::trim)
+                .filter(line -> !line.isBlank())
+                .map(line -> {
+                    if (line.contains("//")) {
+                        return line.substring(0, line.indexOf("//")).trim();
+                    } else return line;
+                })
+                .toList();
+
+        return result;
+    }
+
+
+
     public List<Long> assemblePreProcessedFile(Path path) throws IOException {
         File file = new File(path.toString());
 
@@ -47,11 +99,6 @@ public class MapleAssembler implements Assembler<Long> {
         }
 
         return instructions;
-    }
-
-    @Override
-    public List<Long> assembleFile(Path path) {
-        return List.of();
     }
 
     private Map<String, Integer> createLabelMapChangeLines(List<String> lines) {

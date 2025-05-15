@@ -1,8 +1,11 @@
 package de.johndee.maple.interpreter;
 
+import de.johndee.maple.assembler.MapleAssembler;
 import de.johndee.maple.exceptions.IllegalMemoryAccessException;
 import de.johndee.maple.impl.Maple64;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -10,7 +13,7 @@ import java.util.Scanner;
 
 public class CLIInterpreter {
 
-    private Maple64 maple = new Maple64();
+    private final Maple64 maple = new Maple64();
 
     public void run() {
 
@@ -22,7 +25,6 @@ public class CLIInterpreter {
             String in = input.nextLine();
             String[] parts = in.split(" ");
 
-
             if (parts.length == 0) {
                 System.out.println("Please enter a command.");
                 continue;
@@ -31,6 +33,7 @@ public class CLIInterpreter {
             else if (parts[0].equalsIgnoreCase("help")) {
                 System.out.println("Commands:");
                 System.out.println("lf [PATH] [ADDRESS] - Load a file into memory at the specified address.");
+                System.out.println("pmasm [PATH] [TARGET] - Compile a pre-processed assembly file.");
                 System.out.println("rf [ADDRESS] - Run the program starting from the specified address.");
                 System.out.println("peek [ADDRESS] - Peek at the memory at the specified address.");
                 System.out.println("lr - Lists the register values.");
@@ -78,6 +81,12 @@ public class CLIInterpreter {
 
             else if (parts[0].equalsIgnoreCase("lr") || parts[0].equalsIgnoreCase("listregisters")) {
                 listRegisters();
+            } else if (parts[0].equalsIgnoreCase("pmasm")) {
+                if (parts.length < 3) {
+                    System.out.println("Wrong argument count: Try >pmasm [PATH] [TARGET]");
+                    continue;
+                }
+                compilePmasm(parts[1], parts[2], null);
             }
 
             else if (parts[0].equalsIgnoreCase("exit")) {
@@ -129,6 +138,30 @@ public class CLIInterpreter {
             System.out.println(Arrays.toString(maple.getMemoryDevice().read(address, 8L, -1L)));
         } catch (IllegalMemoryAccessException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void compilePmasm(String source, String target, @Nullable String pathMapleText) {
+        if (!source.endsWith(".pmasm")) {
+            System.out.println("Invalid file type. Please use .pmasm files.");
+        }
+
+        var path = Path.of(source);
+        if (!(new File(String.valueOf(path)).exists())) {
+            System.out.println("Path not found!");
+            return;
+        }
+
+        var assembler = new MapleAssembler();
+        try {
+            var result = assembler.assemblePreProcessedFile(path);
+            MapleDataFileHandler.writeMapleFile(Path.of(target), result.toArray(new Long[0]));
+
+            if (pathMapleText != null) {
+                MapleDataFileHandler.writeMapleTextFile(Path.of(pathMapleText), result.toArray(new Long[0]));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
